@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | Fitness Extreme International</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="/img/Copy%20of%20fei%20-%20intl.png">
+  <style>
+    * { border-radius: 0 !important; }
+    body { font-family: Arial, Helvetica, sans-serif; }
+    .font-headline { font-family: 'Roboto Condensed', Arial, sans-serif; font-weight: 700; text-transform: uppercase; }
+  </style>
+</head>
+<body class="bg-[#04040F] text-white flex items-center justify-center min-h-screen p-4">
+  <div class="bg-[#111118] border border-white/20 p-8 sm:p-10 w-full max-w-md">
+     <div class="flex flex-col items-center justify-center mb-6">
+       <img
+         src="/img/Copy%20of%20fei%20-%20intl.png"
+         onerror="this.src='/img/fei-logo-header.png'"
+         alt="Fitness Extreme International"
+         style="width: 120px; height: 120px; object-fit: contain; display: block;"
+         class="mb-2"
+       />
+       <h1 class="font-headline text-sm tracking-widest text-[#E8731A] uppercase">Fitness Extreme International</h1>
+       <p class="text-xs text-white/50 tracking-wider uppercase mt-0.5">Bengaluru – Varthur Branch</p>
+     </div>
+    <h2 class="font-headline text-2xl tracking-wide mb-6 text-center text-white">Leads Admin Login</h2>
+    
+    <% if (typeof error !== 'undefined') { %>
+      <div class="bg-red-950/80 border border-red-700 text-red-200 p-3 text-xs mb-4 text-center"><%= error %></div>
+    <% } %>
+
+    <form method="POST" action="/admin/login">
+      <div class="mb-4">
+        <label class="block text-xs uppercase tracking-wider text-white/70 font-bold mb-1.5 font-headline">Username</label>
+        <input type="text" name="username" required class="w-full bg-[#0A0A1A] border border-white/20 px-3.5 py-2.5 text-white focus:border-[#E8731A] outline-none transition text-sm">
+      </div>
+      <div class="mb-6">
+        <label class="block text-xs uppercase tracking-wider text-white/70 font-bold mb-1.5 font-headline">Password</label>
+        <input type="password" name="password" required class="w-full bg-[#0A0A1A] border border-white/20 px-3.5 py-2.5 text-white focus:border-[#E8731A] outline-none transition text-sm">
+      </div>
+      <button type="submit" class="w-full bg-[#E8731A] hover:bg-[#C75F10] text-white font-headline text-base py-3 transition uppercase tracking-wider cursor-pointer">
+        Sign In to Dashboard
+      </button>
+    </form>
+    
+    <div class="mt-6 text-center">
+      <a href="/" class="text-xs text-white/50 hover:text-white transition">← Back to Landing Page</a>
+    </div>
+  </div>
+</body>
+</html>

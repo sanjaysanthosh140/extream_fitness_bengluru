@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leads Dashboard | Fitness Extreme International</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css" />
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+    <!-- excel & pdf sheets link -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  <style>
+    :root {
+      --navy-950: #0d1230;
+      --navy-900: #182253;
+      --navy-800: #212c63;
+      --blue-400: #7c9fda;
+      --blue-500: #4f6fd1;
+      --amber-400: #ffb238;
+      --bg-soft: #f5f7fc;
+      --ink: #12162e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Inter", sans-serif;
+      color: var(--ink);
+      background: var(--bg-soft);
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-display { font-family: "Space Grotesk", sans-serif; }
+    .font-mono { font-family: "IBM Plex Mono", monospace; }
+    ::selection { background: var(--amber-400); color: var(--navy-950); }
+  </style>
+</head>
+<body>
+
+  <!-- Top bar -->
+
+  <header class="bg-[var(--navy-950)] text-white">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3">
+          <img
+            src="/img/Copy%20of%20fei%20-%20intl.png"
+            onerror="this.src='/img/fei-logo-header.png'"
+            alt="Fitness Extreme International"
+            class="h-9 w-auto object-contain rounded"
+          />
+          <span class="font-display font-semibold tracking-wide text-sm hidden sm:inline">Fitness Extreme Varthur</span>
+        </div>
+      </div>
+      <a href="/admin/logout" class="text-sm text-white/70 hover:text-white transition flex items-center gap-2">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        Logout
+      </a>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-10">
+
+    <% if (typeof dbError !== 'undefined' && dbError) { %>
+      <div class="mb-6 p-4 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-sm flex items-start gap-3 shadow-sm">
+        <i class="fa-solid fa-triangle-exclamation text-amber-600 text-lg mt-0.5 shrink-0"></i>
+        <div class="space-y-1">
+          <p class="font-bold">MySQL Database Notice:</p>
+          <p class="font-mono text-xs bg-amber-100/80 p-2 rounded text-amber-950"><%= dbError %></p>
+          <p class="text-xs text-amber-800">
+            Please verify MySQL is running on <code class="font-bold">localhost</code> and the database <code class="font-bold">emirates_first</code> with table <code class="font-bold">leads</code> has been created.
+          </p>
+        </div>
+      </div>
+    <% } %>
+
+    <!-- Summary + controls -->
+    <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
+      <div>
+        <p class="font-mono text-xs tracking-widest text-[var(--blue-500)] uppercase mb-1 font-bold">Overview</p>
+        <h1 class="font-display text-2xl md:text-3xl font-semibold text-[var(--navy-900)]">
+          All Leads
+          <span id="leadCountBadge" class="align-middle ml-2 font-mono text-sm font-semibold bg-[var(--navy-900)] text-white px-2.5 py-1 rounded-full">0</span>
+        </h1>
+      </div>
+    </div>
+
+    <!-- Search + filter bar -->
+    <div class="bg-white rounded-2xl border border-black/5 shadow-sm p-4 md:p-5 mb-6 flex flex-col md:flex-row gap-3 md:items-center">
+      <div class="relative flex-1">
+        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-black/30 text-sm"></i>
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Search by name, email or phone..."
+          class="w-full pl-11 pr-4 py-3 rounded-lg border border-black/10 bg-[var(--bg-soft)] focus:border-[var(--blue-500)] outline-none transition text-sm"
+        />
+      </div>
+
+      <select id="filterSelect" class="px-4 py-3 rounded-lg border border-black/10 bg-[var(--bg-soft)] focus:border-[var(--blue-500)] outline-none transition text-sm">
+        <option value="all">All leads</option>
+        <option value="withMessage">With message</option>
+        <option value="withoutMessage">Without message</option>
+        <option value="today">Added today</option>
+        <option value="week">Last 7 days</option>
+      </select>
+
+      <select id="sortSelect" class="px-4 py-3 rounded-lg border border-black/10 bg-[var(--bg-soft)] focus:border-[var(--blue-500)] outline-none transition text-sm">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="nameAsc">Name A–Z</option>
+      </select>
+      
+      <div class="flex gap-2">
+  <button id="exportExcelBtn" class="px-4 py-3 rounded-lg bg-[var(--navy-900)] text-white text-sm font-medium hover:bg-[var(--navy-950)] transition flex items-center gap-2">
+    <i class="fa-solid fa-download"></i>
+    Excel
+  </button>
+  <button id="exportPdfBtn" class="px-4 py-3 rounded-lg border border-black/10 text-[var(--navy-900)] text-sm font-medium hover:bg-[var(--bg-soft)] transition flex items-center gap-2">
+    <i class="fa-solid fa-download"></i>
+    PDF
+  </button>
+</div>
+
+    </div>
+
+    <!-- Table card -->
+    <div class="bg-white rounded-2xl border border-black/5 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead>
+            <tr class="bg-[var(--navy-900)] text-white">
+              <th class="px-5 py-3.5 text-left font-display font-semibold whitespace-nowrap">ID</th>
+              <th class="px-5 py-3.5 text-left font-display font-semibold whitespace-nowrap">Name</th>
+              <th class="px-5 py-3.5 text-left font-display font-semibold whitespace-nowrap">Email</th>
+              <th class="px-5 py-3.5 text-left font-display font-semibold whitespace-nowrap">Phone</th>
+              <th class="px-5 py-3.5 text-left font-display font-semibold whitespace-nowrap">Message</th>
+              <th class="px-5 py-3.5 text-left font-display font-semibold whitespace-nowrap">Date</th>
+              <th class="px-5 py-3.5 text-left font-display font-semibold whitespace-nowrap">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="leadsTableBody">
+            <!-- rows injected by JS from server-rendered data -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Empty state -->
+      <div id="emptyState" class="hidden flex-col items-center justify-center py-16 text-center">
+        <div class="w-14 h-14 rounded-full bg-[var(--bg-soft)] flex items-center justify-center mb-4 mx-auto">
+          <i class="fa-solid fa-inbox text-xl text-black/30"></i>
+        </div>
+        <p class="font-display font-semibold text-black/60 mb-1">No leads found</p>
+        <p class="text-sm text-black/40">Try adjusting your search or filter.</p>
+      </div>
+
+      <!-- Pagination -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 px-5 py-4 border-t border-black/5">
+        <p class="text-xs text-black/45 font-mono" id="paginationSummary">Showing 0–0 of 0</p>
+
+        <div class="flex items-center gap-3">
+          <select id="pageSizeSelect" class="px-3 py-2 rounded-lg border border-black/10 bg-[var(--bg-soft)] text-xs outline-none">
+            <option value="10">10 / page</option>
+            <option value="25" selected>25 / page</option>
+            <option value="50">50 / page</option>
+            <option value="100">100 / page</option>
+          </select>
+
+          <div class="flex items-center gap-1" id="paginationControls">
+            <button id="prevPageBtn" class="w-8 h-8 rounded-lg border border-black/10 text-black/60 hover:bg-[var(--bg-soft)] disabled:opacity-30 disabled:cursor-not-allowed transition flex items-center justify-center">
+              <i class="fa-solid fa-chevron-left text-xs"></i>
+            </button>
+            <span id="pageIndicator" class="font-mono text-xs px-3 text-black/60 whitespace-nowrap">Page 1 of 1</span>
+            <button id="nextPageBtn" class="w-8 h-8 rounded-lg border border-black/10 text-black/60 hover:bg-[var(--bg-soft)] disabled:opacity-30 disabled:cursor-not-allowed transition flex items-center justify-center">
+              <i class="fa-solid fa-chevron-right text-xs"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Server-rendered lead data. EJS writes ONE line of JSON here — no loop, no
+       EJS tags inside the <script> block below, so editors/linters won't choke
+       on <% %> being parsed as JavaScript. -->
+  <script type="application/json" id="leadsData"><%- JSON.stringify(leads || []) %></script>
+
+  <script>
+    const rawLeads = JSON.parse(document.getElementById('leadsData').textContent || '[]');
+
+    // ---- State ----
+    let filteredLeads = [...rawLeads];
+    let currentPage = 1;
+    let pageSize = 25;
+
+    // ---- Elements ----
+    const tbody = document.getElementById('leadsTableBody');
+    const emptyState = document.getElementById('emptyState');
+    const searchInput = document.getElementById('searchInput');
+    const filterSelect = document.getElementById('filterSelect');
+    const sortSelect = document.getElementById('sortSelect');
+    const pageSizeSelect = document.getElementById('pageSizeSelect');
+    const prevBtn = document.getElementById('prevPageBtn');
+    const nextBtn = document.getElementById('nextPageBtn');
+    const pageIndicator = document.getElementById('pageIndicator');
+    const paginationSummary = document.getElementById('paginationSummary');
+    const leadCountBadge = document.getElementById('leadCountBadge');
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str ?? '';
+      return div.innerHTML;
+    }
+
+    function formatDate(dateStr) {
+      const d = new Date(dateStr);
+      if (isNaN(d)) return '-';
+      return d.toLocaleString(undefined, {
+        year: 'numeric', month: 'short', day: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      });
+    }
+
+    function applyFiltersAndSort() {
+      const query = searchInput.value.trim().toLowerCase();
+      const filterVal = filterSelect.value;
+      const sortVal = sortSelect.value;
+
+      const now = new Date();
+      const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+      filteredLeads = rawLeads.filter(lead => {
+        if (query) {
+          const haystack = `${lead.name} ${lead.email} ${lead.phone}`.toLowerCase();
+          if (!haystack.includes(query)) return false;
+        }
+
+        if (filterVal === 'withMessage' && !lead.message) return false;
+        if (filterVal === 'withoutMessage' && lead.message) return false;
+
+        if (filterVal === 'today' || filterVal === 'week') {
+          const created = new Date(lead.created_at);
+          if (isNaN(created)) return false;
+          if (filterVal === 'today' && created < startOfToday) return false;
+          if (filterVal === 'week' && created < weekAgo) return false;
+        }
+
+        return true;
+      });
+
+      filteredLeads.sort((a, b) => {
+        if (sortVal === 'nameAsc') return (a.name || '').localeCompare(b.name || '');
+        const dateA = new Date(a.created_at).getTime() || 0;
+        const dateB = new Date(b.created_at).getTime() || 0;
+        return sortVal === 'oldest' ? dateA - dateB : dateB - dateA;
+      });
+
+      currentPage = 1;
+      render();
+    }
+
+    function render() {
+      const total = filteredLeads.length;
+      const totalPages = Math.max(1, Math.ceil(total / pageSize));
+      currentPage = Math.min(currentPage, totalPages);
+
+      const start = (currentPage - 1) * pageSize;
+      const end = Math.min(start + pageSize, total);
+      const pageItems = filteredLeads.slice(start, end);
+
+      leadCountBadge.textContent = total;
+
+      if (total === 0) {
+        tbody.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        emptyState.classList.add('flex');
+      } else {
+        emptyState.classList.add('hidden');
+        emptyState.classList.remove('flex');
+
+        tbody.innerHTML = pageItems.map(lead => `
+          <tr class="border-t border-black/5 hover:bg-[var(--bg-soft)] transition">
+            <td class="px-5 py-3.5 text-black/50 font-mono text-xs">${escapeHtml(lead.id)}</td>
+            <td class="px-5 py-3.5 font-medium text-[var(--navy-900)]">${escapeHtml(lead.name)}</td>
+            <td class="px-5 py-3.5 text-black/70">${escapeHtml(lead.email)}</td>
+            <td class="px-5 py-3.5 text-black/70 font-mono text-xs">${escapeHtml(lead.phone)}</td>
+            <td class="px-5 py-3.5 text-black/60 max-w-xs truncate" title="${escapeHtml(lead.message)}">${escapeHtml(lead.message) || '<span class="text-black/30">-</span>'}</td>
+            <td class="px-5 py-3.5 text-black/50 text-xs whitespace-nowrap">${formatDate(lead.created_at)}</td>
+            <td class="px-5 py-3.5 whitespace-nowrap">
+            <button class="delete-lead-btn text-red-500 hover:text-red-700 transition" data-id="${escapeHtml(lead.id)}" title="Delete lead">
+            <i class="fa-solid fa-trash text-sm"></i>
+            </button>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      paginationSummary.textContent = total === 0
+        ? 'Showing 0–0 of 0'
+        : `Showing ${start + 1}–${end} of ${total}`;
+      pageIndicator.textContent = `Page ${currentPage} of ${totalPages}`;
+      prevBtn.disabled = currentPage <= 1;
+      nextBtn.disabled = currentPage >= totalPages;
+
+      //delete function
+      tbody.querySelectorAll('.delete-lead-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const id = btn.dataset.id;
+    if (!confirm('Delete this lead? This cannot be undone.')) return;
+
+    try {
+      const res = await fetch(`/admin/leads/${id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Delete failed');
+
+      // remove from local arrays and re-render
+      const idxRaw = rawLeads.findIndex(l => String(l.id) === String(id));
+      if (idxRaw !== -1) rawLeads.splice(idxRaw, 1);
+      const idxFiltered = filteredLeads.findIndex(l => String(l.id) === String(id));
+      if (idxFiltered !== -1) filteredLeads.splice(idxFiltered, 1);
+
+      render();
+    } catch (err) {
+      alert('Could not delete lead. Please try again.');
+      console.error(err);
+    }
+  });
+});
+    }
+
+    searchInput.addEventListener('input', applyFiltersAndSort);
+    filterSelect.addEventListener('change', applyFiltersAndSort);
+    sortSelect.addEventListener('change', applyFiltersAndSort);
+
+    pageSizeSelect.addEventListener('change', () => {
+      pageSize = parseInt(pageSizeSelect.value, 10);
+      currentPage = 1;
+      render();
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (currentPage > 1) { currentPage--; render(); }
+    });
+    nextBtn.addEventListener('click', () => {
+      currentPage++; render();
+    });
+
+    //excel&pdf download function
+  document.getElementById('exportExcelBtn').addEventListener('click', () => {
+  const rows = rawLeads.map(l => ({
+    ID: l.id,
+    Name: l.name,
+    Email: l.email,
+    Phone: l.phone,
+    Message: l.message || '-',
+    Date: formatDate(l.created_at)
+  }));
+  const ws = XLSX.utils.json_to_sheet(rows);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Leads');
+  XLSX.writeFile(wb, `leads-${new Date().toISOString().slice(0,10)}.xlsx`);
+});
+
+document.getElementById('exportPdfBtn').addEventListener('click', () => {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'landscape' });
+  doc.setFontSize(14);
+  doc.text('Startup Works — Leads', 14, 15);
+  doc.autoTable({
+    startY: 22,
+    head: [['ID', 'Name', 'Email', 'Phone', 'Message', 'Date']],
+    body: rawLeads.map(l => [
+      l.id, l.name, l.email, l.phone, l.message || '-', formatDate(l.created_at)
+    ]),
+    styles: { fontSize: 8 },
+    headStyles: { fillColor: [24, 34, 83] }
+  });
+  doc.save(`leads-${new Date().toISOString().slice(0,10)}.pdf`);
+});
+
+    // initial paint
+    applyFiltersAndSort();
+  </script>
+</body>
+</html>
