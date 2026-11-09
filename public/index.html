@@ -105,6 +105,48 @@
       /* No italics anywhere */
       * { font-style: normal !important; }
       ::selection { background: #E8731A; color: #ffffff; }
+      html, body { overflow-x: clip; }
+      a:focus-visible, button:focus-visible, input:focus-visible,
+      select:focus-visible, textarea:focus-visible {
+        outline: 2px solid #F47C48;
+        outline-offset: 3px;
+      }
+      .header-logo {
+        width: 88px;
+        height: 88px;
+        object-fit: contain;
+        display: block;
+      }
+      .contact-icon {
+        display: inline-block;
+        width: 1.15em;
+        height: 1.15em;
+        flex: 0 0 auto;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .contact-link {
+        display: inline-flex;
+        min-height: 44px;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .feature-section-photo {
+        height: clamp(18rem, 40vw, 34rem);
+      }
+      .mobile-action-buttons {
+        align-items: stretch;
+      }
+      .mobile-action-buttons > a {
+        justify-content: center;
+        text-align: center;
+      }
+      .mobile-offer-callout {
+        display: none;
+      }
       /* Image slot container */
       .img-slot-container {
         position: relative;
@@ -234,6 +276,141 @@
         transition: border-color 0.2s;
       }
       .faq-item:hover { border-color: rgba(255,255,255,0.35); }
+      .enquiry-card {
+        padding: clamp(20px, 3vw, 30px);
+      }
+      .contact-form {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      #contactForm label {
+        display: block;
+        margin-bottom: 6px !important;
+        color: rgba(255,255,255,0.82) !important;
+        font-size: 13px !important;
+        line-height: 1.35;
+      }
+      #contactForm input:not([type="hidden"]):not(.hidden),
+      #contactForm select,
+      #contactForm textarea {
+        width: 100%;
+        min-height: 48px;
+        padding: 11px 12px !important;
+        color: #fff;
+        font-size: 16px !important;
+        line-height: 1.35;
+      }
+      #contactForm textarea {
+        min-height: 92px;
+        resize: vertical !important;
+      }
+      #contactForm .relative.flex > span {
+        min-height: 48px;
+        padding-inline: 14px !important;
+        font-size: 14px !important;
+      }
+      #contactForm button[type="submit"] {
+        min-height: 52px;
+      }
+      @media (max-width: 639px) {
+        .mobile-action-buttons {
+          display: grid !important;
+          grid-template-columns: minmax(0, 1fr);
+        }
+        #personal-training .mobile-action-buttons {
+          margin-left: -24px !important;
+          margin-right: -24px !important;
+        }
+        .mobile-action-buttons > a {
+          width: 100%;
+          height: 56px;
+          min-height: 56px;
+          padding: 12px 16px !important;
+        }
+        .hero-action-buttons > a {
+          height: 56px;
+          min-height: 56px;
+          padding: 12px 16px !important;
+          font-size: 14px !important;
+        }
+        .mobile-quick-actions {
+          display: grid !important;
+          flex: 1;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .mobile-quick-actions > a {
+          width: 100%;
+          min-width: 0;
+          justify-content: center;
+          min-height: 44px;
+        }
+        .enquiry-card {
+          border-color: rgba(244,124,72,0.8) !important;
+          box-shadow: 0 0 0 1px rgba(232,115,26,0.28), 0 12px 32px rgba(232,115,26,0.12);
+        }
+        .mobile-offer-callout {
+          display: inline-flex;
+          align-items: center;
+          min-height: 32px;
+          margin-bottom: 12px;
+          padding: 5px 10px;
+          border: 1px solid rgba(244,124,72,0.65);
+          background: rgba(232,115,26,0.14);
+          color: #F7A46F;
+          font-family: 'Teko', Arial, sans-serif;
+          font-size: 15px;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+          line-height: 1;
+          text-transform: uppercase;
+        }
+        .site-header {
+          background: rgba(4,4,15,0.88) !important;
+          backdrop-filter: blur(10px);
+        }
+        .site-header > div {
+          min-height: 92px;
+          gap: 8px;
+          padding-top: 6px;
+          padding-bottom: 6px;
+        }
+        .header-logo {
+          width: 80px;
+          height: 80px;
+        }
+        .site-header .btn-coral,
+        .site-header .btn-primary {
+          min-height: 44px;
+          gap: 6px;
+          padding: 8px 10px !important;
+          font-size: 12px !important;
+          white-space: nowrap;
+        }
+        .site-header .contact-icon,
+        footer .contact-icon {
+          width: 20px;
+          height: 20px;
+        }
+        .fixed.bottom-0 .contact-icon {
+          width: 24px;
+          height: 24px;
+        }
+        .enquiry-card {
+          padding: 18px !important;
+        }
+        section[class*="py-16"],
+        section[class*="py-20"] {
+          padding-top: 3rem;
+          padding-bottom: 3rem;
+        }
+      }
+      @media (min-width: 640px) and (max-width: 1023px) {
+        .header-logo {
+          width: 80px;
+          height: 80px;
+        }
+      }
     </style>
 
     <!-- Google Tag Manager DataLayer Init -->
@@ -253,7 +430,7 @@
             src="/img/Copy%20of%20fei%20-%20intl.png"
             onerror="this.src='/img/fei-logo-header.png'"
             alt="Fitness Extreme International"
-            style="width: 100px; height: 100px; object-fit: contain; display: block;"
+            class="header-logo"
           />
         </a>
 
@@ -265,6 +442,9 @@
             onclick="trackEvent('call_click', { placement: 'header' })"
             class="btn-coral"
           >
+            <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.2 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.35 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.08 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.84.57 2.8.69A2 2 0 0 1 22 16.92z"/>
+            </svg>
             <span>+91 88966 33777</span>
           </a>
 
@@ -276,6 +456,10 @@
             onclick="trackEvent('whatsapp_click', { placement: 'header' })"
             class="btn-wa"
           >
+            <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.55 0 .22 5.33.22 11.88c0 2.09.55 4.13 1.59 5.93L.12 24l6.34-1.66a11.9 11.9 0 0 0 5.64 1.43h.01c6.55 0 11.88-5.33 11.89-11.88a11.8 11.8 0 0 0-3.5-8.39z"/>
+              <path d="M8.1 6.9c-.3 0-.6.1-.8.4-.2.3-.9.9-.9 2.2s.9 2.6 1 2.8c.2.2 1.8 2.9 4.5 4 2.2.9 2.7.7 3.2.7.5-.1 1.6-.7 1.8-1.3.2-.7.2-1.2.1-1.3s-.3-.2-.6-.4l-1.8-.9c-.2-.1-.4-.1-.6.2l-.8 1c-.2.2-.3.2-.6.1a7.4 7.4 0 0 1-2.2-1.4 8.2 8.2 0 0 1-1.5-1.9c-.2-.3 0-.4.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.8-1.9c-.2-.5-.4-.5-.7-.5z"/>
+            </svg>
             <span>WhatsApp</span>
           </a>
 
@@ -286,7 +470,7 @@
         </div>
 
         <!-- Mobile Quick Actions -->
-        <div class="flex md:hidden items-center gap-2">
+        <div class="mobile-quick-actions flex md:hidden items-center gap-2">
           <a
             href="tel:+918896633777"
             onclick="trackEvent('call_click', { placement: 'header_mobile' })"
@@ -294,6 +478,9 @@
             style="padding: 10px 14px; font-size: 13px;"
             aria-label="Call +91 88966 33777"
           >
+            <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.2 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.35 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.08 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.84.57 2.8.69A2 2 0 0 1 22 16.92z"/>
+            </svg>
             <span>Call</span>
           </a>
           <a href="#enquiry-form" class="btn-primary" style="padding: 10px 14px; font-size: 12px;">
@@ -305,7 +492,7 @@
     </header>
 
     <!-- SECTION 1: HERO & ABOVE-THE-FOLD LEAD CAPTURE (Transparent Header overlays this) -->
-    <section class="relative min-h-[96vh] flex items-center pt-52 pb-16 lg:pt-56 lg:pb-24 overflow-hidden" style="background:#04040F;">
+    <section class="relative min-h-0 lg:min-h-[96vh] flex items-center pt-36 sm:pt-40 lg:pt-56 pb-12 lg:pb-24 overflow-hidden" style="background:#04040F;">
       
       <!-- Slot: hero.jpg / img_2.jpeg Real Wide Gym Interior -->
       <div class="absolute inset-0 z-0 img-slot-container">
@@ -341,7 +528,7 @@
 
             <!-- Primary H1 Headline: Oswald Bold, uppercase, NO italics -->
             <h1 class="font-headline font-bold uppercase text-white leading-none tracking-tight"
-                style="font-size: clamp(2.4rem, 5.5vw, 4.8rem); line-height: 1.02; margin: 12px 0;">
+                style="font-size: clamp(2rem, 7.5vw, 4.8rem); line-height: 1.02; margin: 12px 0;">
               60% OFF AT <br/>
               <span style="color:#E8731A;">FITNESS EXTREME</span> <br/>
               VARTHUR
@@ -360,7 +547,7 @@
             </div>
 
             <!-- CTA Action Row: Square buttons, flat colour -->
-            <div class="flex flex-wrap items-center gap-3 pt-2">
+            <div class="hero-action-buttons mobile-action-buttons flex flex-wrap items-center gap-3 pt-2">
               <a href="#enquiry-form" class="btn-primary" style="padding:14px 30px; font-size:15px;">
                 <span>Book Your Visit</span>
               </a>
@@ -373,12 +560,16 @@
                 class="btn-wa"
                 style="padding:13px 26px; font-size:15px;"
               >
-                <span>Chat on WhatsApp</span>
+                <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.55 0 .22 5.33.22 11.88c0 2.09.55 4.13 1.59 5.93L.12 24l6.34-1.66a11.9 11.9 0 0 0 5.64 1.43h.01c6.55 0 11.88-5.33 11.89-11.88a11.8 11.8 0 0 0-3.5-8.39z"/>
+                  <path d="M8.1 6.9c-.3 0-.6.1-.8.4-.2.3-.9.9-.9 2.2s.9 2.6 1 2.8c.2.2 1.8 2.9 4.5 4 2.2.9 2.7.7 3.2.7.5-.1 1.6-.7 1.8-1.3.2-.7.2-1.2.1-1.3s-.3-.2-.6-.4l-1.8-.9c-.2-.1-.4-.1-.6.2l-.8 1c-.2.2-.3.2-.6.1a7.4 7.4 0 0 1-2.2-1.4 8.2 8.2 0 0 1-1.5-1.9c-.2-.3 0-.4.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.8-1.9c-.2-.5-.4-.5-.7-.5z"/>
+                </svg>
+                <span>WhatsApp</span>
               </a>
             </div>
 
             <!-- Trust Badge Line -->
-            <div class="pt-3 flex items-center gap-4 text-xs" style="color:rgba(255,255,255,0.55); border-top:1px solid rgba(255,255,255,0.18);">
+            <div class="pt-3 flex flex-wrap items-center gap-3 sm:gap-4 text-xs" style="color:rgba(255,255,255,0.55); border-top:1px solid rgba(255,255,255,0.18);">
               <span style="color:rgba(255,255,255,0.85);">No Spam Policy</span>
               <span>•</span>
               <span style="color:rgba(255,255,255,0.85);">Official Branch Rates</span>
@@ -390,12 +581,13 @@
 
           <!-- Right Column: Instant Enquiry Form (Above the fold) -->
           <div class="lg:col-span-5" id="enquiry-form">
-            <div style="background:#111118; border:1px solid rgba(255,255,255,0.20); padding:26px 26px 22px; position:relative;">
+            <div class="enquiry-card" style="background:#111118; border:1px solid rgba(255,255,255,0.20); position:relative;">
               
               <!-- Flat orange top accent line -->
               <div style="position:absolute; top:0; left:0; right:0; height:3px; background:#E8731A;"></div>
 
               <div class="mb-5">
+                <span class="mobile-offer-callout">Limited-Time Offer · 60% Off</span>
                 <div class="flex items-center justify-between mb-1">
                   <span class="font-headline font-bold text-xs uppercase tracking-widest" style="color:#E8731A;">Instant Branch Pass</span>
                   <span style="background:rgba(232,115,26,0.15); color:#E8731A; font-size:11px; font-weight:700; padding:2px 8px; text-transform:uppercase;">60% OFF Active</span>
@@ -409,7 +601,7 @@
               </div>
 
               <!-- Public Form connecting to Monolithic /api/submit -->
-              <form id="contactForm" class="space-y-3">
+              <form id="contactForm" class="contact-form">
                 
                 <!-- Honeypot anti-spam (hidden) -->
                 <input type="text" name="hp_field" id="hp_field" class="hidden" tabindex="-1" autocomplete="off" />
@@ -639,6 +831,9 @@
                   href="tel:+918896633777"
                   style="background:transparent; color:#04040F; border:1px solid #04040F; padding:13px 22px; font-family:'Teko',Arial,sans-serif; font-weight:700; font-size:14px; text-transform:uppercase; letter-spacing:0.06em; text-decoration:none; display:inline-flex; align-items:center; gap:8px;"
                 >
+                  <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.2 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.35 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.08 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.84.57 2.8.69A2 2 0 0 1 22 16.92z"/>
+                  </svg>
                   <span>Call +91 88966 33777</span>
                 </a>
               </div>
@@ -1101,7 +1296,7 @@
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
             <!-- Trainer Photo (img_20.jpeg real photo) -->
-            <div class="lg:col-span-5 h-72 sm:h-96 lg:h-full min-h-[340px] img-slot-container relative">
+            <div class="lg:col-span-5 feature-section-photo img-slot-container relative">
               <img
                 id="slot-trainer"
                 src="/img/img_20.jpeg"
@@ -1136,7 +1331,7 @@
                 <div>Accountability check-ins and body composition monitoring</div>
               </div>
 
-              <div class="pt-4 flex flex-wrap items-center gap-3">
+              <div class="mobile-action-buttons pt-4 flex flex-wrap gap-3">
                 <a
                   href="#enquiry-form"
                   class="btn-primary"
@@ -1152,6 +1347,10 @@
                   class="btn-wa"
                   style="padding:12px 22px;"
                 >
+                  <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.55 0 .22 5.33.22 11.88c0 2.09.55 4.13 1.59 5.93L.12 24l6.34-1.66a11.9 11.9 0 0 0 5.64 1.43h.01c6.55 0 11.88-5.33 11.89-11.88a11.8 11.8 0 0 0-3.5-8.39z"/>
+                    <path d="M8.1 6.9c-.3 0-.6.1-.8.4-.2.3-.9.9-.9 2.2s.9 2.6 1 2.8c.2.2 1.8 2.9 4.5 4 2.2.9 2.7.7 3.2.7.5-.1 1.6-.7 1.8-1.3.2-.7.2-1.2.1-1.3s-.3-.2-.6-.4l-1.8-.9c-.2-.1-.4-.1-.6.2l-.8 1c-.2.2-.3.2-.6.1a7.4 7.4 0 0 1-2.2-1.4 8.2 8.2 0 0 1-1.5-1.9c-.2-.3 0-.4.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.8-1.9c-.2-.5-.4-.5-.7-.5z"/>
+                  </svg>
                   <span>WhatsApp Coach Desk</span>
                 </a>
               </div>
@@ -1256,18 +1455,18 @@
         
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           
-          <!-- Left: Entrance Photo Slot (20px rounded photo per specs) -->
-          <div class="lg:col-span-6 photo-rounded overflow-hidden aspect-[16/10] sm:aspect-[4/3] img-slot-container relative" style="border:1px solid rgba(255,255,255,0.20);">
+          <!-- Left: Branch Entrance Photo Slot (20px rounded photo per specs) -->
+          <div class="lg:col-span-6 feature-section-photo photo-rounded overflow-hidden img-slot-container relative" style="border:1px solid rgba(255,255,255,0.20);">
             <img
               id="slot-entrance"
-              src="/img/img_18.jpeg"
+              src="/img/img_19.jpeg"
               data-fallback="/img/entrance.jpg"
               alt="Fitness Extreme International Varthur building and branch on SH 35"
               loading="lazy"
-              onerror="handleSlotFallback(this, 'img_18.jpeg', 'Varthur Branch Entrance')"
+              onerror="handleSlotFallback(this, 'img_19.jpeg', 'Varthur Branch Entrance')"
               class="w-full h-full object-cover photo-rounded"
             />
-            <div class="slot-fallback" id="fallback-img_18.jpeg">
+            <div class="slot-fallback" id="fallback-img_19.jpeg">
               <span class="font-mono text-xs uppercase text-white/70 font-semibold">[Branch Entrance]</span>
             </div>
             <div style="position:absolute; bottom:12px; left:12px; background:#04040F; border:1px solid rgba(255,255,255,0.20); padding:8px 14px;">
@@ -1292,7 +1491,12 @@
 
               <div>
                 <strong class="text-white block font-bold">Phone & WhatsApp:</strong>
-                <a href="tel:+918896633777" class="hover:underline font-bold" style="color:#E8731A;">+91 88966 33777</a>
+                <a href="tel:+918896633777" class="contact-link hover:underline font-bold" style="color:#E8731A;">
+                  <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.2 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.35 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.08 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.84.57 2.8.69A2 2 0 0 1 22 16.92z"/>
+                  </svg>
+                  +91 88966 33777
+                </a>
               </div>
 
               <div>
@@ -1307,7 +1511,7 @@
             </div>
 
             <!-- Action Buttons: Secondary outline button + Coral call button + WhatsApp -->
-            <div class="flex flex-wrap items-center gap-3 pt-2">
+            <div class="mobile-action-buttons flex flex-wrap gap-3 pt-2">
               <a
                 href="https://maps.google.com/?q=Fitness+Extreme+International+Varthur+Bengaluru+SH+35"
                 target="_blank"
@@ -1315,6 +1519,10 @@
                 class="btn-secondary"
                 style="padding:13px 22px; font-size:13px;"
               >
+                <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0z"/>
+                  <circle cx="12" cy="10" r="2.5"/>
+                </svg>
                 <span>Get Directions (Maps)</span>
               </a>
 
@@ -1324,6 +1532,9 @@
                 class="btn-coral"
                 style="padding:13px 22px; font-size:13px;"
               >
+                <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.2 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.35 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.08 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.84.57 2.8.69A2 2 0 0 1 22 16.92z"/>
+                </svg>
                 <span>Call Branch</span>
               </a>
 
@@ -1334,6 +1545,10 @@
                 class="btn-wa"
                 style="padding:13px 20px; font-size:13px;"
               >
+                <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.55 0 .22 5.33.22 11.88c0 2.09.55 4.13 1.59 5.93L.12 24l6.34-1.66a11.9 11.9 0 0 0 5.64 1.43h.01c6.55 0 11.88-5.33 11.89-11.88a11.8 11.8 0 0 0-3.5-8.39z"/>
+                  <path d="M8.1 6.9c-.3 0-.6.1-.8.4-.2.3-.9.9-.9 2.2s.9 2.6 1 2.8c.2.2 1.8 2.9 4.5 4 2.2.9 2.7.7 3.2.7.5-.1 1.6-.7 1.8-1.3.2-.7.2-1.2.1-1.3s-.3-.2-.6-.4l-1.8-.9c-.2-.1-.4-.1-.6.2l-.8 1c-.2.2-.3.2-.6.1a7.4 7.4 0 0 1-2.2-1.4 8.2 8.2 0 0 1-1.5-1.9c-.2-.3 0-.4.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.8-1.9c-.2-.5-.4-.5-.7-.5z"/>
+                </svg>
                 <span>WhatsApp</span>
               </a>
             </div>
@@ -1386,7 +1601,12 @@
           <div class="space-y-2">
             <p class="font-headline font-bold text-white uppercase tracking-wider text-sm">Contact &amp; Legal</p>
             <p style="font-family:'Roboto Condensed',Arial,sans-serif; color:rgba(255,255,255,0.80);">SH 35, Devasthanagalu, Gunjur, Varthur, Bengaluru 560087</p>
-            <p style="font-family:'Roboto Condensed',Arial,sans-serif;">Phone: <a href="tel:+918896633777" class="text-white hover:text-brandOrange transition">+91 88966 33777</a></p>
+            <p style="font-family:'Roboto Condensed',Arial,sans-serif;">Phone: <a href="tel:+918896633777" class="contact-link text-white hover:text-brandOrange transition">
+              <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.2 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.35 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.08 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.84.57 2.8.69A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              +91 88966 33777
+            </a></p>
             <div class="pt-2">
               <button
                 type="button"
@@ -1419,6 +1639,9 @@
         class="flex flex-col items-center justify-center py-2.5 active:bg-white/5 transition"
         style="color:#F47C48;"
       >
+        <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.2 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.35 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.08 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.84.57 2.8.69A2 2 0 0 1 22 16.92z"/>
+        </svg>
         <span class="font-bold">Call Now</span>
       </a>
 
@@ -1431,6 +1654,10 @@
         class="flex flex-col items-center justify-center py-2.5 active:bg-white/5 transition"
         style="color:#1FAA59;"
       >
+        <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.55 0 .22 5.33.22 11.88c0 2.09.55 4.13 1.59 5.93L.12 24l6.34-1.66a11.9 11.9 0 0 0 5.64 1.43h.01c6.55 0 11.88-5.33 11.89-11.88a11.8 11.8 0 0 0-3.5-8.39z"/>
+          <path d="M8.1 6.9c-.3 0-.6.1-.8.4-.2.3-.9.9-.9 2.2s.9 2.6 1 2.8c.2.2 1.8 2.9 4.5 4 2.2.9 2.7.7 3.2.7.5-.1 1.6-.7 1.8-1.3.2-.7.2-1.2.1-1.3s-.3-.2-.6-.4l-1.8-.9c-.2-.1-.4-.1-.6.2l-.8 1c-.2.2-.3.2-.6.1a7.4 7.4 0 0 1-2.2-1.4 8.2 8.2 0 0 1-1.5-1.9c-.2-.3 0-.4.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.8-1.9c-.2-.5-.4-.5-.7-.5z"/>
+        </svg>
         <span class="font-bold">WhatsApp</span>
       </a>
 
