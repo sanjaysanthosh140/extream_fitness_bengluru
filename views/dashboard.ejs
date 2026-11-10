@@ -58,10 +58,13 @@
           <span class="font-display font-semibold tracking-wide text-sm hidden sm:inline">Fitness Extreme Varthur</span>
         </div>
       </div>
-      <a href="/admin/logout" class="text-sm text-white/70 hover:text-white transition flex items-center gap-2">
-        <i class="fa-solid fa-arrow-right-from-bracket"></i>
-        Logout
-      </a>
+      <nav class="flex items-center gap-4">
+        <a href="/admin/marketing-settings" class="text-sm text-white/70 hover:text-white transition">Marketing Settings</a>
+        <a href="/admin/logout" class="text-sm text-white/70 hover:text-white transition flex items-center gap-2">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          Logout
+        </a>
+      </nav>
     </div>
   </header>
 
@@ -160,6 +163,7 @@
               <th class="px-5 py-3.5 text-left font-display font-semibold whitespace-nowrap">Name</th>
               <th class="px-5 py-3.5 text-left font-display font-semibold whitespace-nowrap">Email</th>
               <th class="px-5 py-3.5 text-left font-display font-semibold whitespace-nowrap">Phone</th>
+              <th class="px-5 py-3.5 text-left font-display font-semibold whitespace-nowrap">Source</th>
               <th class="px-5 py-3.5 text-left font-display font-semibold whitespace-nowrap">Offer</th>
               <th class="px-5 py-3.5 text-left font-display font-semibold whitespace-nowrap">Message</th>
               <th class="px-5 py-3.5 text-left font-display font-semibold whitespace-nowrap">Date</th>
@@ -254,11 +258,16 @@
 
     function getLeadDetails(lead) {
       const message = lead.message || '';
+      const sourceMatch = message.match(/\[Source:\s*([^\]]+)\]/i);
       const offerMatch = message.match(/\[Offer:\s*([^\]]+)\]/i);
-      const cleanedMessage = offerMatch
-        ? message.replace(/\[Offer:\s*[^\]]+\]/i, '').replace(/(?:\s*\|\s*){2,}/g, ' | ').replace(/^\s*\|\s*|\s*\|\s*$/g, '').trim()
-        : message;
+      const cleanedMessage = message
+        .replace(/\[Source:\s*[^\]]+\]/i, '')
+        .replace(/\[Offer:\s*[^\]]+\]/i, '')
+        .replace(/(?:\s*\|\s*){2,}/g, ' | ')
+        .replace(/^\s*\|\s*|\s*\|\s*$/g, '')
+        .trim();
       return {
+        source: sourceMatch ? sourceMatch[1].trim() : '',
         offer: offerMatch ? offerMatch[1].trim() : '',
         message: cleanedMessage
       };
@@ -294,7 +303,7 @@
       filteredLeads = rawLeads.filter(lead => {
         const details = getLeadDetails(lead);
         if (query) {
-          const haystack = `${lead.name} ${lead.email} ${lead.phone} ${details.offer} ${details.message}`.toLowerCase();
+          const haystack = `${lead.name} ${lead.email} ${lead.phone} ${details.source} ${details.offer} ${details.message}`.toLowerCase();
           if (!haystack.includes(query)) return false;
         }
 
@@ -354,6 +363,7 @@
             <td class="px-5 py-3.5 font-medium text-[var(--navy-900)]">${escapeHtml(lead.name)}</td>
             <td class="px-5 py-3.5 text-black/70">${escapeHtml(lead.email)}</td>
             <td class="px-5 py-3.5 text-black/70 font-mono text-xs">${escapeHtml(lead.phone)}</td>
+            <td class="px-5 py-3.5 text-black/70 whitespace-nowrap">${escapeHtml(getLeadDetails(lead).source) || '<span class="text-black/30">-</span>'}</td>
             <td class="px-5 py-3.5 text-black/70 whitespace-nowrap">${escapeHtml(getLeadDetails(lead).offer) || '<span class="text-black/30">-</span>'}</td>
             <td class="px-5 py-3.5 text-black/60 min-w-[16rem] max-w-sm whitespace-pre-wrap break-words" style="overflow-wrap:anywhere;" title="${escapeHtml(getLeadDetails(lead).message)}">${escapeHtml(getLeadDetails(lead).message) || '<span class="text-black/30">-</span>'}</td>
             <td class="px-5 py-3.5 text-black/50 text-xs whitespace-nowrap">${formatDate(lead.created_at)}</td>
@@ -426,6 +436,7 @@
     Name: l.name,
     Email: l.email,
     Phone: l.phone,
+    Source: getLeadDetails(l).source || '-',
     Offer: getLeadDetails(l).offer || '-',
     Message: getLeadDetails(l).message || '-',
     Date: formatDate(l.created_at)
@@ -443,9 +454,9 @@ document.getElementById('exportPdfBtn').addEventListener('click', () => {
   doc.text('Startup Works — Leads', 14, 15);
   doc.autoTable({
     startY: 22,
-    head: [['ID', 'Name', 'Email', 'Phone', 'Offer', 'Message', 'Date']],
+    head: [['ID', 'Name', 'Email', 'Phone', 'Source', 'Offer', 'Message', 'Date']],
     body: rawLeads.map(l => [
-      l.id, l.name, l.email, l.phone, getLeadDetails(l).offer || '-', getLeadDetails(l).message || '-', formatDate(l.created_at)
+      l.id, l.name, l.email, l.phone, getLeadDetails(l).source || '-', getLeadDetails(l).offer || '-', getLeadDetails(l).message || '-', formatDate(l.created_at)
     ]),
     styles: { fontSize: 8 },
     headStyles: { fillColor: [24, 34, 83] }

@@ -112,8 +112,8 @@
         outline-offset: 3px;
       }
       .header-logo {
-        width: 88px;
-        height: 88px;
+        width: 120px;
+        height: 100px;
         object-fit: contain;
         display: block;
       }
@@ -229,6 +229,28 @@
         text-decoration: none;
       }
       .btn-wa:hover { background: #17923d; }
+      .facility-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 56px;
+        padding: 14px 18px;
+        background: #111118;
+        border: 1px solid #E8731A;
+        color: #fff;
+        font-family: 'Teko', Arial, sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+      .facility-button:hover {
+        background: #E8731A;
+        color: #fff;
+      }
       /* Transparent Header bar over hero photo */
       .site-header {
         position: absolute;
@@ -370,14 +392,14 @@
           backdrop-filter: blur(10px);
         }
         .site-header > div {
-          min-height: 92px;
+          min-height: 100px;
           gap: 8px;
           padding-top: 6px;
           padding-bottom: 6px;
         }
         .header-logo {
-          width: 80px;
-          height: 80px;
+          width: 104px;
+          height: 88px;
         }
         .site-header .btn-coral,
         .site-header .btn-primary {
@@ -407,8 +429,8 @@
       }
       @media (min-width: 640px) and (max-width: 1023px) {
         .header-logo {
-          width: 80px;
-          height: 80px;
+          width: 112px;
+          height: 92px;
         }
       }
     </style>
@@ -417,12 +439,13 @@
     <script>
       window.dataLayer = window.dataLayer || [];
     </script>
+    <!-- MARKETING_SETTINGS -->
   </head>
   <body class="bg-inkBlack text-white antialiased pb-20 md:pb-0">
 
     <!-- TOP BAR / TRANSPARENT HEADER -->
     <header class="site-header">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between">
+      <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-2 flex items-center justify-between">
 
         <!-- Gym Logo — prominent size, raw PNG, transparent header -->
         <a href="/" class="flex items-center group py-1" title="Fitness Extreme International">
@@ -465,7 +488,7 @@
 
           <!-- Primary Book Visit button in orange #E8731A -->
           <a href="#enquiry-form" class="btn-primary">
-            Book Visit
+            Book Visits
           </a>
         </div>
 
@@ -508,9 +531,7 @@
         <div class="slot-fallback" id="fallback-img_2.jpeg">
           <span class="font-mono text-xs uppercase text-white/70 font-semibold tracking-wider">[Hero Photo: Varthur Main Floor]</span>
         </div>
-        <!-- Flat dark navy overlay for contrast -->
-        <div class="absolute inset-0" style="background: rgba(4,4,15,0.82);"></div>
-        <div class="absolute inset-0" style="background: linear-gradient(90deg, rgba(4,4,15,0.92) 0%, rgba(4,4,15,0.70) 60%, rgba(4,4,15,0.40) 100%);"></div>
+        <div class="absolute inset-0" style="background: linear-gradient(90deg, rgba(4,4,15,0.42) 0%, rgba(4,4,15,0.24) 55%, rgba(4,4,15,0.12) 100%);"></div>
       </div>
 
       <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -566,6 +587,13 @@
                 </svg>
                 <span>WhatsApp</span>
               </a>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 pt-1" aria-label="Gym services">
+              <a href="#facilities" class="facility-button">Strength Training</a>
+              <a href="#facilities" class="facility-button">Cardio Training</a>
+              <a href="#personal-training" class="facility-button">Personal Training</a>
+              <a href="#facilities" class="facility-button">Steam Room</a>
             </div>
 
             <!-- Trust Badge Line -->
@@ -711,8 +739,23 @@
                   class="btn-primary w-full justify-center"
                   style="padding: 14px; font-size: 15px; width: 100%;"
                 >
-                  <span id="btnText">Submit Offer Request</span>
+                  <span id="btnText">Get yout free trail</span>
                 </button>
+
+                <a
+                  href="https://wa.me/918896633777?text=Hi%20Fitness%20Extreme%20Varthur%2C%20I%20have%20a%20question%20about%20your%20offers."
+                  target="_blank"
+                  rel="noopener"
+                  onclick="trackEvent('whatsapp_click', { placement: 'enquiry_form' })"
+                  class="btn-wa w-full justify-center"
+                  style="padding:12px; font-size:14px;"
+                >
+                  <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.55 0 .22 5.33.22 11.88c0 2.09.55 4.13 1.59 5.93L.12 24l6.34-1.66a11.9 11.9 0 0 0 5.64 1.43h.01c6.55 0 11.88-5.33 11.89-11.88a11.8 11.8 0 0 0-3.5-8.39z"/>
+                    <path d="M8.1 6.9c-.3 0-.6.1-.8.4-.2.3-.9.9-.9 2.2s.9 2.6 1 2.8c.2.2 1.8 2.9 4.5 4 2.2.9 2.7.7 3.2.7.5-.1 1.6-.7 1.8-1.3.2-.7.2-1.2.1-1.3s-.3-.2-.6-.4l-1.8-.9c-.2-.1-.4-.1-.6.2l-.8 1c-.2.2-.3.2-.6.1a7.4 7.4 0 0 1-2.2-1.4 8.2 8.2 0 0 1-1.5-1.9c-.2-.3 0-.4.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.8-1.9c-.2-.5-.4-.5-.7-.5z"/>
+                  </svg>
+                  <span>Connect with us on WhatsApp</span>
+                </a>
 
                 <!-- Status Feedback -->
                 <div id="formMessage" class="hidden p-3 text-xs font-semibold text-center"></div>
