@@ -569,13 +569,13 @@
             </div>
 
             <!-- Trust Badge Line -->
-            <div class="pt-3 flex flex-wrap items-center gap-3 sm:gap-4 text-xs" style="color:rgba(255,255,255,0.55); border-top:1px solid rgba(255,255,255,0.18);">
-              <span style="color:rgba(255,255,255,0.85);">No Spam Policy</span>
-              <span>•</span>
-              <span style="color:rgba(255,255,255,0.85);">Official Branch Rates</span>
-              <span>•</span>
-              <span class="font-headline font-bold uppercase tracking-wide" style="color:rgba(255,255,255,0.75);">"Be Fit, Be Happy"</span>
-            </div>
+            <!-- <div class="pt-3 flex flex-wrap items-center gap-3 sm:gap-4 text-xs" style="color:rgba(255,255,255,0.55); border-top:1px solid rgba(255,255,255,0.18);"> -->
+              <!-- <span style="color:rgba(255,255,255,0.85);">No Spam Policy</span> -->
+              <!-- <span>•</span> -->
+              <!-- <span style="color:rgba(255,255,255,0.85);">Official Branch Rates</span> -->
+              <!-- <span>•</span> -->
+              <!-- <span class="font-headline font-bold uppercase tracking-wide" style="color:rgba(255,255,255,0.75);">"Be Fit, Be Happy"</span> -->
+            <!-- </div> -->
 
           </div>
 
@@ -589,14 +589,14 @@
               <div class="mb-5">
                 <span class="mobile-offer-callout">Limited-Time Offer · 60% Off</span>
                 <div class="flex items-center justify-between mb-1">
-                  <span class="font-headline font-bold text-xs uppercase tracking-widest" style="color:#E8731A;">Instant Branch Pass</span>
+                  <span class="font-headline font-bold text-xs uppercase tracking-widest" style="color:#E8731A;">Choose Your Offer</span>
                   <span style="background:rgba(232,115,26,0.15); color:#E8731A; font-size:11px; font-weight:700; padding:2px 8px; text-transform:uppercase;">60% OFF Active</span>
                 </div>
                 <h3 class="font-headline font-bold uppercase text-white tracking-tight" style="font-size:1.55rem; line-height:1.15;">
-                  Claim Your 60% Voucher
+                  Select an Offer
                 </h3>
                 <p style="font-family:'Roboto Condensed',Arial,sans-serif; font-size:12px; color:rgba(255,255,255,0.55); margin-top:4px;">
-                  Fill in your details below. Our Varthur team will call you to lock in the promotional rate.
+                  Choose a day pass or the 60% off membership offer. Our Varthur team will contact you to confirm.
                 </p>
               </div>
 
@@ -639,7 +639,7 @@
                       style="width:100%; padding:9px 12px; background:#0A0A1A; border:1px solid rgba(255,255,255,0.20); border-left:0; color:#fff; font-size:13px; outline:none;"
                     />
                   </div>
-                  <p style="font-size:10px; color:rgba(255,255,255,0.35); margin-top:2px;">We'll send your visit pass and offer voucher via WhatsApp / SMS.</p>
+                  <p style="font-size:10px; color:rgba(255,255,255,0.35); margin-top:2px;">We'll send your selected offer details via WhatsApp / SMS.</p>
                 </div>
 
                 <!-- Email (Required by monolithic backend) -->
@@ -657,7 +657,7 @@
                   </div>
                 </div>
 
-                <!-- Primary Goal & Preferred Branch -->
+                <!-- Primary Goal & Offer -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label for="goal" style="display:block; font-size:11px; font-weight:700; color:rgba(255,255,255,0.70); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:3px;">Fitness Goal</label>
@@ -676,15 +676,17 @@
                   </div>
 
                   <div>
-                    <label for="preferred_branch" style="display:block; font-size:11px; font-weight:700; color:rgba(255,255,255,0.70); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:3px;">Branch</label>
-                    <input
-                      type="text"
-                      id="preferred_branch"
-                      name="preferred_branch"
-                      value="Bengaluru – Varthur"
-                      readonly
-                      style="width:100%; padding:9px 10px; background:rgba(10,10,26,0.60); border:1px solid rgba(255,255,255,0.20); color:rgba(255,255,255,0.70); font-size:12px; cursor:not-allowed;"
-                    />
+                    <label for="offer" style="display:block; font-size:11px; font-weight:700; color:rgba(255,255,255,0.70); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:3px;">Offers</label>
+                    <select
+                      id="offer"
+                      name="offer"
+                      required
+                      style="width:100%; padding:9px 10px; background:#0A0A1A; border:1px solid rgba(255,255,255,0.20); color:#fff; font-size:12px; outline:none;"
+                    >
+                      <option value="" selected disabled>Choose an offer</option>
+                      <option value="Day Pass - ₹500">Day Pass - ₹500</option>
+                      <option value="Membership - 60% Off">Membership - 60% Off</option>
+                    </select>
                   </div>
                 </div>
 
@@ -709,7 +711,7 @@
                   class="btn-primary w-full justify-center"
                   style="padding: 14px; font-size: 15px; width: 100%;"
                 >
-                  <span id="btnText">Get 60% Off Voucher</span>
+                  <span id="btnText">Submit Offer Request</span>
                 </button>
 
                 <!-- Status Feedback -->
@@ -1413,7 +1415,7 @@
               </span>
             </summary>
             
-            <div style="font-family:'Roboto Condensed',Arial,sans-serif; font-size:14px; line-height:1.6; color:rgba(255,255,255,0.78); border-top:1px solid rgba(255,255,255,0.15); margin-top:12px; padding-top:12px; space-y-2;">
+            <div style="font-family:'Roboto Condensed',Arial,sans-serif; font-size:14px; line-height:1.6; color:rgba(255,255,255,0.78); border-top:1px solid rgba(255,255,255,0.15); margin-top:12px; padding-top:12px;">
               <p>The 60% discount applies to select annual and multi-month membership packages at the Varthur branch for new members who register through this promotional page.</p>
               <p style="color:rgba(255,255,255,0.50); font-size:12px; margin-top:4px;">Note: Specific tier rates and validity dates will be confirmed by our front desk when you schedule your visit.</p>
             </div>
@@ -1561,71 +1563,64 @@
       </div>
     </section>
 
-    <!-- SECTION 11: COMPLIANT FOOTER & PRIVACY POLICY (Background #04040F) -->
-    <footer class="py-12 text-white/70 text-xs border-t border-white/20" style="background:#04040F;">
+    <!-- SECTION 11: FOOTER -->
+    <footer class="text-white/80 border-t border-white/20" style="background:linear-gradient(110deg,#080710 0%,#65301f 52%,#080710 100%);">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-8 border-b border-white/15">
-          
-          <!-- Col 1: Brand Info with prominent logo -->
-          <div class="md:col-span-2 space-y-3">
-            <div class="flex items-center gap-3">
-              <img
-                src="/img/Copy%20of%20fei%20-%20intl.png"
-                onerror="this.src='/img/fei-logo-header.png'"
-                alt="Fitness Extreme International"
-                style="width: 52px; height: 52px; object-fit: contain; display: block;"
-              />
-              <span class="font-headline font-bold uppercase text-xl text-white tracking-tight">FITNESS EXTREME INTERNATIONAL</span>
-            </div>
-            <p style="font-family:'Roboto Condensed',Arial,sans-serif; font-size:13px; line-height:1.6; color:rgba(255,255,255,0.60); max-width:400px;">
-              Bengaluru – Varthur Branch. Premium fitness facility equipped with high-end resistance systems, functional training, cardio machines, and group classes.
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+          <div class="py-8 pl-5 pr-5 border-l-4 border-brandOrange border-b border-white/15 lg:border-b-0 lg:border-r lg:border-white/15">
+            <h2 class="font-headline font-bold uppercase text-white tracking-wide text-sm mb-4">Location &amp; Contact</h2>
+            <p class="mb-3" style="font-family:'Roboto Condensed',Arial,sans-serif; line-height:1.6;">
+              <span class="font-bold" style="color:#F47C48;">Address:</span>
+              SH 35, Devasthanagalu, Gunjur, Varthur, Bengaluru 560087
             </p>
-            <p class="font-headline font-bold text-white/80 uppercase tracking-widest text-xs pt-1">
-              "Be Fit, Be Happy"
+            <p style="font-family:'Roboto Condensed',Arial,sans-serif;">
+              <span class="font-bold" style="color:#F47C48;">Phone:</span>
+              <a href="tel:+918896633777" class="hover:text-white transition">+91 88966 33777</a>
             </p>
           </div>
 
-          <!-- Col 2: Quick Links -->
-          <div class="space-y-2">
-            <p class="font-headline font-bold text-white uppercase tracking-wider text-sm">Quick Jump</p>
-            <ul class="space-y-1.5 text-xs" style="font-family:'Roboto Condensed',Arial,sans-serif;">
-              <li><a href="#offer-panel" class="hover:text-white transition">60% Off Offer</a></li>
-              <li><a href="#facilities" class="hover:text-white transition">Facilities &amp; Zones</a></li>
+          <nav class="py-8 px-5 border-b border-white/15 lg:border-b-0 lg:border-r lg:border-white/15" aria-label="Footer quick links">
+            <h2 class="font-headline font-bold text-white tracking-wide text-sm mb-4">Quick Link</h2>
+            <ul class="space-y-2" style="font-family:'Roboto Condensed',Arial,sans-serif;">
+              <li><a href="#offer-panel" class="hover:text-white transition">Offers</a></li>
+              <li><a href="#facilities" class="hover:text-white transition">Facilities</a></li>
               <li><a href="#personal-training" class="hover:text-white transition">Personal Coaching</a></li>
-              <li><a href="#faq" class="hover:text-white transition">Branch FAQs</a></li>
+              <li><a href="#faq" class="hover:text-white transition">FAQs</a></li>
               <li><a href="#visit" class="hover:text-white transition">Location &amp; Hours</a></li>
+            </ul>
+          </nav>
+
+          <div class="py-8 px-5 border-b border-white/15 sm:border-b-0 lg:border-r lg:border-white/15">
+            <h2 class="font-headline font-bold text-white tracking-wide text-sm mb-4">Connect</h2>
+            <ul class="space-y-2" style="font-family:'Roboto Condensed',Arial,sans-serif;">
+              <li><a href="https://wa.me/918896633777" target="_blank" rel="noopener" class="hover:text-white transition">WhatsApp</a></li>
+              <li><a href="https://maps.google.com/?q=Fitness+Extreme+International+Varthur+Bengaluru+SH+35" target="_blank" rel="noopener" class="hover:text-white transition">Get Directions</a></li>
+              <li>
+                <button type="button" onclick="togglePrivacyModal(true)" class="hover:text-white transition" style="background:transparent; border:0; padding:0; color:inherit; cursor:pointer;">
+                  Privacy Policy &amp; Ad Disclosure
+                </button>
+              </li>
             </ul>
           </div>
 
-          <!-- Col 3: Contact & Legal -->
-          <div class="space-y-2">
-            <p class="font-headline font-bold text-white uppercase tracking-wider text-sm">Contact &amp; Legal</p>
-            <p style="font-family:'Roboto Condensed',Arial,sans-serif; color:rgba(255,255,255,0.80);">SH 35, Devasthanagalu, Gunjur, Varthur, Bengaluru 560087</p>
-            <p style="font-family:'Roboto Condensed',Arial,sans-serif;">Phone: <a href="tel:+918896633777" class="contact-link text-white hover:text-brandOrange transition">
-              <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.2 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.35 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.08 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.84.57 2.8.69A2 2 0 0 1 22 16.92z"/>
-              </svg>
+          <div class="py-8 px-5">
+            <p style="font-family:'Roboto Condensed',Arial,sans-serif; font-size:15px; line-height:1.6; color:rgba(255,255,255,0.85);">
+              Fitness Extreme International offers a premium, user-friendly fitness experience in Bengaluru, empowering you to reach your goals.
+            </p>
+            <a href="tel:+918896633777" class="mt-5 inline-flex items-center gap-3 font-headline font-bold text-white text-xl hover:text-brandOrange transition">
+              <span class="inline-flex items-center justify-center rounded-full" style="width:40px; height:40px; background:#F47C48;" aria-hidden="true">
+                <svg class="contact-icon" viewBox="0 0 24 24" focusable="false">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.2 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.35 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.08 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.84.57 2.8.69A2 2 0 0 1 22 16.92z"/>
+                </svg>
+              </span>
               +91 88966 33777
-            </a></p>
-            <div class="pt-2">
-              <button
-                type="button"
-                onclick="togglePrivacyModal(true)"
-                style="color:#E8731A; background:transparent; border:none; padding:0; cursor:pointer; font-weight:700; text-decoration:underline;"
-              >
-                Privacy Policy &amp; Ad Disclosure
-              </button>
-            </div>
+            </a>
           </div>
-
         </div>
 
-        <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-white/40 text-[11px]" style="font-family:'Roboto Condensed',Arial,sans-serif;">
+        <div class="py-5 border-t border-white/15 text-center" style="font-family:'Roboto Condensed',Arial,sans-serif;">
           <p>© 2026 Fitness Extreme International – Bengaluru (Varthur). All rights reserved.</p>
-          <p>Google Ads Landing Page. Not affiliated with Google LLC.</p>
         </div>
-
       </div>
     </footer>
 
@@ -1819,7 +1814,7 @@
         const phone = document.getElementById('phone').value.trim();
         const email = document.getElementById('email').value.trim();
         const goal = document.getElementById('goal').value;
-        const branch = document.getElementById('preferred_branch').value;
+        const offer = document.getElementById('offer').value;
         const userNote = document.getElementById('message_input').value.trim();
 
         // 10-digit Indian Mobile validation
@@ -1832,7 +1827,7 @@
         }
 
         // Package comprehensive details into the message payload for MySQL leads table
-        let enrichedMessage = `[Branch: ${branch}] | [Goal: ${goal}]`;
+        let enrichedMessage = `[Offer: ${offer}] | [Goal: ${goal}]`;
         if (userNote) {
           enrichedMessage += ` | [Note: ${userNote}]`;
         }
@@ -1855,7 +1850,7 @@
 
         // Loading state
         submitBtn.disabled = true;
-        btnText.textContent = 'Securing 60% Voucher...';
+        btnText.textContent = 'Sending your request...';
         formMessage.classList.add('hidden');
 
         try {
@@ -1873,9 +1868,9 @@
             formMessage.className = 'p-4 rounded-xl text-xs sm:text-sm font-semibold text-center bg-emerald-950/80 text-emerald-200 border border-emerald-700/60 shadow-lg';
             formMessage.innerHTML = `
               <div class="text-emerald-400 text-base mb-1 font-headline font-bold">
-                60% OFF VOUCHER RESERVED!
+                REQUEST RECEIVED!
               </div>
-              <div>Thank you ${name}! Our Varthur branch advisor will call you at ${phone} to confirm your visit.</div>
+              <div>Thank you ${name}! Our Varthur team will call you at ${phone} to confirm your ${offer}.</div>
             `;
             formMessage.classList.remove('hidden');
             contactForm.reset();
@@ -1884,7 +1879,7 @@
             trackEvent('lead_submit', {
               lead_name: name,
               goal: goal,
-              branch: branch
+              offer: offer
             });
 
           } else {
@@ -1897,7 +1892,7 @@
           formMessage.classList.remove('hidden');
         } finally {
           submitBtn.disabled = false;
-          btnText.textContent = 'Get 60% Off Voucher';
+          btnText.textContent = 'Submit Offer Request';
         }
       });
     </script>
