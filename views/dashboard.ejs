@@ -53,7 +53,7 @@
             src="/img/Copy%20of%20fei%20-%20intl.png"
             onerror="this.src='/img/fei-logo-header.png'"
             alt="Fitness Extreme International"
-            class="h-9 w-auto object-contain rounded"
+            class="h-14 sm:h-16 w-auto max-w-[180px] object-contain rounded"
           />
           <span class="font-display font-semibold tracking-wide text-sm hidden sm:inline">Fitness Extreme Varthur</span>
         </div>
@@ -124,6 +124,11 @@
       <label class="flex items-center gap-2 text-xs text-black/60">
         To
         <input id="dateTo" type="date" aria-label="Filter leads to date" class="px-3 py-3 rounded-lg border border-black/10 bg-[var(--bg-soft)] text-sm outline-none focus:border-[var(--blue-500)]" />
+      </label>
+      <label class="flex items-center gap-2 text-xs text-black/60">
+        Last
+        <input id="lastDays" type="number" min="1" step="1" inputmode="numeric" placeholder="Days" aria-label="Filter leads from the last number of days" class="w-24 px-3 py-3 rounded-lg border border-black/10 bg-[var(--bg-soft)] text-sm outline-none focus:border-[var(--blue-500)]" />
+        days
       </label>
 
       <select id="sortSelect" class="px-4 py-3 rounded-lg border border-black/10 bg-[var(--bg-soft)] focus:border-[var(--blue-500)] outline-none transition text-sm">
@@ -223,6 +228,7 @@
     const filterSelect = document.getElementById('filterSelect');
     const dateFrom = document.getElementById('dateFrom');
     const dateTo = document.getElementById('dateTo');
+    const lastDays = document.getElementById('lastDays');
     const sortSelect = document.getElementById('sortSelect');
     const pageSizeSelect = document.getElementById('pageSizeSelect');
     const prevBtn = document.getElementById('prevPageBtn');
@@ -248,10 +254,13 @@
 
     function getLeadDetails(lead) {
       const message = lead.message || '';
-      const offerMatch = message.match(/^\[Offer:\s*([^\]]+)\]\s*\|?\s*/i);
+      const offerMatch = message.match(/\[Offer:\s*([^\]]+)\]/i);
+      const cleanedMessage = offerMatch
+        ? message.replace(/\[Offer:\s*[^\]]+\]/i, '').replace(/(?:\s*\|\s*){2,}/g, ' | ').replace(/^\s*\|\s*|\s*\|\s*$/g, '').trim()
+        : message;
       return {
         offer: offerMatch ? offerMatch[1].trim() : '',
-        message: offerMatch ? message.slice(offerMatch[0].length).trim() : message
+        message: cleanedMessage
       };
     }
 
@@ -273,6 +282,10 @@
       const sortVal = sortSelect.value;
       const fromDate = dateFrom.value;
       const toDate = dateTo.value;
+      const daysValue = Number.parseInt(lastDays.value, 10);
+      const lastDaysStart = Number.isInteger(daysValue) && daysValue > 0
+        ? getLeadDateKey(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - daysValue + 1))
+        : '';
 
       const now = new Date();
       const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -290,9 +303,10 @@
         if (filterVal === 'withoutMessage' && lead.message) return false;
 
         const leadDate = getLeadDateKey(lead.created_at);
-        if ((fromDate || toDate) && !leadDate) return false;
+        if ((fromDate || toDate || lastDaysStart) && !leadDate) return false;
         if (fromDate && leadDate < fromDate) return false;
         if (toDate && leadDate > toDate) return false;
+        if (lastDaysStart && leadDate < lastDaysStart) return false;
 
         if (filterVal === 'today' || filterVal === 'week') {
           const created = new Date(lead.created_at);
@@ -389,6 +403,7 @@
     filterSelect.addEventListener('change', applyFiltersAndSort);
     dateFrom.addEventListener('change', applyFiltersAndSort);
     dateTo.addEventListener('change', applyFiltersAndSort);
+    lastDays.addEventListener('input', applyFiltersAndSort);
     sortSelect.addEventListener('change', applyFiltersAndSort);
 
     pageSizeSelect.addEventListener('change', () => {
