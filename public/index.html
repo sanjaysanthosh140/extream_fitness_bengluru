@@ -772,6 +772,32 @@
       </div>
     </section>
 
+    <section class="border-y border-white/10 bg-[#0a0a1a] py-4 sm:py-5" aria-label="Gym highlights">
+      <div class="mx-auto grid max-w-7xl grid-cols-3 divide-x divide-white/10 px-3 sm:px-6 lg:px-8">
+        <div class="flex flex-col items-center justify-center gap-0.5 px-1 py-2 text-center sm:flex-row sm:gap-3">
+          <span class="font-headline text-2xl font-bold text-brandOrange sm:text-3xl">1000+</span>
+          <span class="text-[9px] font-semibold uppercase leading-4 tracking-wider text-white/65 sm:text-left sm:text-xs sm:leading-5">Active members</span>
+        </div>
+        <div class="flex flex-col items-center justify-center gap-0.5 px-1 py-2 text-center sm:flex-row sm:gap-3">
+          <span class="font-headline text-2xl font-bold text-brandOrange sm:text-3xl">16+</span>
+          <span class="text-[9px] font-semibold uppercase leading-4 tracking-wider text-white/65 sm:text-left sm:text-xs sm:leading-5">Years in Bengaluru</span>
+        </div>
+        <div class="flex flex-col items-center justify-center gap-0.5 px-1 py-2 text-center sm:flex-row sm:gap-3">
+          <span class="font-headline text-2xl font-bold text-white sm:text-3xl">4.8</span>
+          <span class="flex flex-col items-center sm:items-start">
+            <span class="flex gap-0.5 text-amber-400" role="img" aria-label="4.8 out of 5 stars">
+              <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="m10 1.5 2.6 5.27 5.82.85-4.21 4.1 1 5.8L10 14.78l-5.21 2.74 1-5.8-4.21-4.1 5.82-.85L10 1.5Z"/></svg>
+              <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="m10 1.5 2.6 5.27 5.82.85-4.21 4.1 1 5.8L10 14.78l-5.21 2.74 1-5.8-4.21-4.1 5.82-.85L10 1.5Z"/></svg>
+              <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="m10 1.5 2.6 5.27 5.82.85-4.21 4.1 1 5.8L10 14.78l-5.21 2.74 1-5.8-4.21-4.1 5.82-.85L10 1.5Z"/></svg>
+              <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="m10 1.5 2.6 5.27 5.82.85-4.21 4.1 1 5.8L10 14.78l-5.21 2.74 1-5.8-4.21-4.1 5.82-.85L10 1.5Z"/></svg>
+              <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="m10 1.5 2.6 5.27 5.82.85-4.21 4.1 1 5.8L10 14.78l-5.21 2.74 1-5.8-4.21-4.1 5.82-.85L10 1.5Z"/></svg>
+            </span>
+            <span class="text-[9px] font-semibold uppercase leading-4 tracking-wider text-white/65 sm:text-xs sm:leading-5">Member rating</span>
+          </span>
+        </div>
+      </div>
+    </section>
+
     <!-- SECTION 2: OPENING HOURS CARDS (Alternate Section #0A0A1A) -->
     <section class="py-14 border-y border-white/20" style="background:#0A0A1A;">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1556,22 +1582,17 @@
               <p class="font-headline font-bold text-2xl tracking-wide uppercase" style="color:#F47C48;">"Be Fit, Be Happy"</p>
             </div>
 
-            <!-- Action Buttons: Secondary outline button + Coral call button + WhatsApp -->
-            <div class="mobile-action-buttons flex flex-wrap gap-3 pt-2">
-              <a
-                href="https://maps.google.com/?q=Fitness+Extreme+International+Varthur+Bengaluru+SH+35"
-                target="_blank"
-                rel="noopener"
-                class="btn-secondary"
-                style="padding:13px 22px; font-size:13px;"
-              >
-                <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0z"/>
-                  <circle cx="12" cy="10" r="2.5"/>
-                </svg>
-                <span>Get Directions (Maps)</span>
-              </a>
+            <iframe
+              src="https://maps.google.com/maps?q=Fitness+Extreme+International+Varthur+Bengaluru+SH+35&z=15&output=embed"
+              title="Map to Fitness Extreme International Varthur"
+              class="w-full aspect-video border border-white/20"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen
+            ></iframe>
 
+            <!-- Action Buttons: Coral call button + WhatsApp -->
+            <div class="mobile-action-buttons flex flex-wrap gap-3 pt-2">
               <a
                 href="tel:+918896633777"
                 onclick="trackEvent('call_click', { placement: 'visit_section' })"
