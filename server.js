@@ -82,7 +82,7 @@ app.get('/', async (req, res) => {
   res.type('html').send(html.replace(marker, tags.join('\n')));
 });
 
-const PORT = process.env.PORT || 2000;
+const PORT = process.env.PORT || 2001;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
