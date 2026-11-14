@@ -152,8 +152,8 @@
         outline-offset: 3px;
       }
       .header-logo {
-        width: 120px;
-        height: 100px;
+        width: 100px;
+        height: 82px;
         object-fit: contain;
         display: block;
       }
@@ -364,16 +364,22 @@
         border-color: rgba(255, 255, 255, 0.35);
       }
       .enquiry-card {
-        padding: clamp(20px, 3vw, 30px);
+        position: relative;
+        background: #14141e;
+        border: 1px solid rgba(244, 124, 72, 0.55);
+        box-shadow:
+          0 16px 40px rgba(0, 0, 0, 0.45),
+          0 0 24px rgba(232, 115, 26, 0.1);
+        padding: clamp(16px, 2.5vw, 24px);
       }
       .contact-form {
         display: flex;
         flex-direction: column;
-        gap: 14px;
+        gap: 10px;
       }
       #contactForm label {
         display: block;
-        margin-bottom: 6px !important;
+        margin-bottom: 4px !important;
         color: rgba(255, 255, 255, 0.82) !important;
         font-size: 13px !important;
         line-height: 1.35;
@@ -382,25 +388,28 @@
       #contactForm select,
       #contactForm textarea {
         width: 100%;
-        min-height: 48px;
-        padding: 11px 12px !important;
+        min-height: 44px;
+        padding: 8px 10px !important;
         color: #fff;
         font-size: 16px !important;
         line-height: 1.35;
       }
       #contactForm textarea {
-        min-height: 92px;
+        min-height: 78px;
         resize: vertical !important;
       }
       #contactForm .relative.flex > span {
-        min-height: 48px;
-        padding-inline: 14px !important;
+        min-height: 44px;
+        padding-inline: 10px !important;
         font-size: 14px !important;
       }
       #contactForm button[type="submit"] {
-        min-height: 52px;
+        min-height: 46px;
       }
       @media (max-width: 639px) {
+        #enquiry-form {
+          order: -1;
+        }
         .mobile-action-buttons {
           display: grid !important;
           grid-template-columns: minmax(0, 1fr);
@@ -436,7 +445,8 @@
           border-color: rgba(244, 124, 72, 0.8) !important;
           box-shadow:
             0 0 0 1px rgba(232, 115, 26, 0.28),
-            0 12px 32px rgba(232, 115, 26, 0.12);
+            0 12px 28px rgba(232, 115, 26, 0.12),
+            0 16px 40px rgba(0, 0, 0, 0.45);
         }
         .mobile-offer-callout {
           display: inline-flex;
@@ -459,14 +469,14 @@
           backdrop-filter: blur(10px);
         }
         .site-header > div {
-          min-height: 100px;
+          min-height: 84px;
           gap: 8px;
-          padding-top: 6px;
-          padding-bottom: 6px;
+          padding-top: 2px;
+          padding-bottom: 2px;
         }
         .header-logo {
-          width: 104px;
-          height: 88px;
+          width: 86px;
+          height: 72px;
         }
         .site-header .btn-coral,
         .site-header .btn-primary {
@@ -486,7 +496,7 @@
           height: 24px;
         }
         .enquiry-card {
-          padding: 18px !important;
+          padding: 14px !important;
         }
         section[class*="py-16"],
         section[class*="py-20"] {
@@ -496,8 +506,8 @@
       }
       @media (min-width: 640px) and (max-width: 1023px) {
         .header-logo {
-          width: 112px;
-          height: 92px;
+          width: 100px;
+          height: 82px;
         }
       }
     </style>
@@ -613,7 +623,7 @@
 
     <!-- SECTION 1: HERO & ABOVE-THE-FOLD LEAD CAPTURE (Transparent Header overlays this) -->
     <section
-      class="relative min-h-0 lg:min-h-[96vh] flex items-center pt-36 sm:pt-40 lg:pt-56 pb-12 lg:pb-24 overflow-hidden"
+      class="relative min-h-0 lg:min-h-[96vh] flex items-center pt-24 sm:pt-28 lg:pt-30 pb-12 lg:pb-24 overflow-hidden"
       style="background: #04040f"
     >
       <!-- Slot: hero.jpg / img_2.jpeg Real Wide Gym Interior -->
@@ -648,7 +658,7 @@
 
       <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div
-          class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center"
+          class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start"
         >
           <!-- Left Column: High-Impact Copy & Value Props -->
           <div class="lg:col-span-7 text-left space-y-5">
@@ -772,14 +782,7 @@
 
           <!-- Right Column: Instant Enquiry Form (Above the fold) -->
           <div class="lg:col-span-5" id="enquiry-form">
-            <div
-              class="enquiry-card"
-              style="
-                background: #111118;
-                border: 1px solid rgba(255, 255, 255, 0.2);
-                position: relative;
-              "
-            >
+            <div class="enquiry-card">
               <!-- Flat orange top accent line -->
               <div
                 style="
@@ -787,12 +790,12 @@
                   top: 0;
                   left: 0;
                   right: 0;
-                  height: 3px;
+                  height: 4px;
                   background: #e8731a;
                 "
               ></div>
 
-              <div class="mb-5">
+              <div class="mb-3">
                 <span class="mobile-offer-callout"
                   >Ask About Current Offers</span
                 >
@@ -1016,7 +1019,7 @@
                   type="submit"
                   id="submitBtn"
                   class="btn-primary w-full justify-center"
-                  style="padding: 14px; font-size: 15px; width: 100%"
+                  style="padding: 10px; font-size: 14px; width: 100%"
                 >
                   <span id="btnText">Send Enquiry</span>
                 </button>
@@ -1029,7 +1032,7 @@
                     trackEvent('whatsapp_click', { placement: 'enquiry_form' })
                   "
                   class="btn-wa w-full justify-center"
-                  style="padding: 12px; font-size: 14px"
+                  style="padding: 10px; font-size: 13px"
                 >
                   <svg
                     class="contact-icon"
