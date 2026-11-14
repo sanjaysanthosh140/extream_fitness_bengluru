@@ -38,29 +38,32 @@ Create a `.env` file in the project root and set the values for your server:
 
 ```dotenv
 PORT=2000
-DB_HOST=localhost
-DB_USER=your_mysql_user
-DB_PASSWORD=your_mysql_password
-DB_NAME=emirates_first
+DB_HOST=your_railway_host
+DB_USER=your_railway_user
+DB_PASSWORD=your_railway_password
+DB_NAME=gym_bangluru
 SESSION_SECRET=replace_with_a_long_random_secret
 ADMIN_USERNAME=choose_an_admin_username
 ADMIN_PASSWORD=choose_a_strong_admin_password
 ```
 
-Use the database name `emirates_first`; it is the name created by the included
-schema. Use a long, unique session secret and a strong admin password. Keep this
+Use the existing Railway database `gym_bangluru` and its provided connection
+values. Use a long, unique session secret and a strong admin password. Keep this
 file private.
 
-## 3. Create the database
+## 3. Prepare the existing database
 
-The schema creates the `emirates_first` database and `leads` table:
+The database must already exist. The included schema selects `gym_bangluru` and
+creates only the app's `leads` and `marketing_settings` tables when missing; it
+does not create the database or the pre-existing `header_code_snippets` table.
+Run it only if those app tables still need to be initialized:
 
 ```bash
-mysql -u root -p < database/schema.sql
+mysql -h your_railway_host -u your_railway_user -p gym_bangluru < database/schema.sql
 ```
 
-When using a restricted MySQL account, make sure it has permission to create or
-access the database and to read and write the `leads` table.
+The MySQL account must be able to access the existing database and read/write
+the app tables.
 
 ## 4. Start and check the application
 
@@ -130,7 +133,7 @@ Serve the public site over HTTPS.
 ## Deployment checklist
 
 - [ ] Production `.env` values are set and kept private.
-- [ ] MySQL is running and `emirates_first.leads` exists.
+- [ ] Railway MySQL is reachable and `gym_bangluru.leads` exists.
 - [ ] The landing page loads from the domain.
 - [ ] A test enquiry is saved and visible in `/admin`.
 - [ ] Admin credentials are unique and strong.

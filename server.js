@@ -8,6 +8,7 @@ require('dotenv').config();
 
 const formRoutes = require('./routes/form');
 const adminRoutes = require('./routes/admin');
+const headerCodeRoutes = require('./routes/header-code');
 const { getMarketingSettings } = require('./database/marketing-settings');
 const { getHeaderCodeSnippetsForPublic } = require('./database/header-code-manager');
 
@@ -17,7 +18,6 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
@@ -32,6 +32,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Routes
 app.use('/api', formRoutes);
+app.use('/api', headerCodeRoutes);
 app.use('/admin', adminRoutes);
 
 // Home page
@@ -74,7 +75,12 @@ app.get('/', async (req, res) => {
     tags.push(`<script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,'clarity','script','${clarityId}');</script>`);
   }
 
-  const activeSnippets = await getHeaderCodeSnippetsForPublic().catch(() => []);
+  let activeSnippets = [];
+  try {
+    activeSnippets = await getHeaderCodeSnippetsForPublic();
+  } catch (error) {
+    console.error('Could not load active header code snippets:', error);
+  }
 
   const snippetGroups = {
     HEAD: [],
@@ -83,17 +89,17 @@ app.get('/', async (req, res) => {
   };
 
   for (const snippet of activeSnippets) {
-    if (!snippet || !snippet.code_content) continue;
-    const content = String(snippet.code_content || '');
+    if (!snippet || !snippet.code) continue;
+    const content = String(snippet.code);
     let injectedMarkup = content;
 
-    if (snippet.code_type === 'CSS') {
+    if (snippet.type === 'CSS') {
       injectedMarkup = `<style>${content}</style>`;
-    } else if (snippet.code_type === 'JavaScript') {
+    } else if (snippet.type === 'JavaScript') {
       injectedMarkup = `<script>${content}\n</script>`;
     }
 
-    const location = snippet.insertion_location || 'HEAD';
+    const location = snippet.location || 'HEAD';
     if (snippetGroups[location]) {
       snippetGroups[location].push(injectedMarkup);
     }
@@ -109,27 +115,34 @@ app.get('/', async (req, res) => {
   }
 
   let renderedHtml = html.replace(marker, `${tags.join('\n')}\n${headMarker}`);
-  renderedHtml = renderedHtml.replace(headMarker, `${snippetGroups.HEAD.join('\n')}\n${headMarker}`);
-  renderedHtml = renderedHtml.replace(bodyStartMarker, `${snippetGroups.BODY_START.join('\n')}\n${bodyStartMarker}`);
-  renderedHtml = renderedHtml.replace(bodyEndMarker, `${snippetGroups.BODY_END.join('\n')}\n${bodyEndMarker}`);
-
-  if (!renderedHtml.includes(headMarker)) {
-    renderedHtml = renderedHtml.replace('</head>', `${snippetGroups.HEAD.join('\n')}\n</head>`);
-  }
-  if (!renderedHtml.includes(bodyStartMarker)) {
-    renderedHtml = renderedHtml.replace('<body', '<body');
-  }
-  if (!renderedHtml.includes(bodyEndMarker)) {
-    renderedHtml = renderedHtml.replace('</body>', `${snippetGroups.BODY_END.join('\n')}\n</body>`);
-  }
-
-  renderedHtml = renderedHtml
-    .replace(new RegExp(`${headMarker}`, 'g'), snippetGroups.HEAD.join('\n'))
-    .replace(new RegExp(`${bodyStartMarker}`, 'g'), snippetGroups.BODY_START.join('\n'))
-    .replace(new RegExp(`${bodyEndMarker}`, 'g'), snippetGroups.BODY_END.join('\n'));
+  const inject = (source, markerText, markup, fallback) => {
+    if (source.includes(markerText)) return source.replace(markerText, markup);
+    return source.replace(fallback.pattern, match => fallback.replace(match, markup));
+  };
+  renderedHtml = inject(
+    renderedHtml,
+    headMarker,
+    snippetGroups.HEAD.join('\n'),
+    { pattern: /<\/head>/i, replace: (match, markup) => `${markup}\n${match}` }
+  );
+  renderedHtml = inject(
+    renderedHtml,
+    bodyStartMarker,
+    snippetGroups.BODY_START.join('\n'),
+    { pattern: /<body\b[^>]*>/i, replace: (match, markup) => `${match}\n${markup}` }
+  );
+  renderedHtml = inject(
+    renderedHtml,
+    bodyEndMarker,
+    snippetGroups.BODY_END.join('\n'),
+    { pattern: /<\/body>/i, replace: (match, markup) => `${markup}\n${match}` }
+  );
 
   res.type('html').send(renderedHtml);
 });
+
+app.get('/index.html', (req, res) => res.redirect(301, '/'));
+app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 
 const PORT = process.env.PORT || 2001;
 app.listen(PORT, () => {

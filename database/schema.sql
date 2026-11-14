@@ -1,6 +1,5 @@
 -- Fitness Extreme / Lead Management Database Schema
-CREATE DATABASE IF NOT EXISTS emirates_first;
-USE emirates_first;
+USE gym_bangluru;
 
 CREATE TABLE IF NOT EXISTS leads (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -19,18 +18,6 @@ CREATE TABLE IF NOT EXISTS marketing_settings (
   clarity_project_id VARCHAR(64) NOT NULL DEFAULT '',
   default_lead_source VARCHAR(100) NOT NULL DEFAULT 'Bengaluru - Varthur',
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS header_code_snippets (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  description VARCHAR(255) NOT NULL DEFAULT '',
-  code_type ENUM('HTML', 'CSS', 'JavaScript') NOT NULL,
-  insertion_location ENUM('HEAD', 'BODY_START', 'BODY_END') NOT NULL,
-  code_content LONGTEXT NOT NULL,
-  is_active TINYINT(1) NOT NULL DEFAULT 0,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 INSERT IGNORE INTO marketing_settings (id) VALUES (1);

@@ -82,16 +82,7 @@
         <span class="font-display font-semibold tracking-wide text-sm hidden sm:inline">Fitness Extreme Varthur</span>
       </div>
       <nav class="flex items-center gap-4">
-        <div class="relative group">
-          <button type="button" class="flex items-center gap-2 text-sm text-white/80 hover:text-white transition">
-            Website Settings
-            <i class="fa-solid fa-chevron-down text-[10px]"></i>
-          </button>
-          <div class="absolute right-0 top-full mt-2 hidden min-w-[220px] rounded-xl border border-white/10 bg-[#111a3a] py-2 shadow-xl group-hover:block">
-            <a href="/admin/header-code-manager" class="block px-4 py-2 text-sm text-white/80 hover:bg-white/5 hover:text-white">Header Code Manager</a>
-            <a href="/admin/marketing-settings" class="block px-4 py-2 text-sm text-white/80 hover:bg-white/5 hover:text-white">Marketing Settings</a>
-          </div>
-        </div>
+        <a href="/admin/header-code-manager" class="text-sm text-white/80 hover:text-white transition">Header Code Manager</a>
         <a href="/admin/logout" class="text-sm text-white/70 hover:text-white transition flex items-center gap-2">
           <i class="fa-solid fa-arrow-right-from-bracket"></i>
           Logout
@@ -110,7 +101,7 @@
         </div>
         <button id="addSnippetBtn" type="button" class="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--navy-900)] px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[var(--navy-950)] transition">
           <i class="fa-solid fa-plus"></i>
-          + Add New Code
+           Add New Code
         </button>
       </div>
     </div>
@@ -121,14 +112,14 @@
           <i class="fa-solid fa-triangle-exclamation text-sm"></i>
         </div>
         <div>
-          <p class="font-semibold text-[#5d3d00]">Only add code from trusted sources.</p>
-          <p class="mt-1 text-sm text-[#7b5b1f]">Active HTML and JavaScript run on your storefront and can execute arbitrary JavaScript. Review code before enabling a snippet. Inactive snippets are never sent to storefront visitors.</p>
+          <p class="font-semibold text-[#5d3d00]">Custom HTML and JavaScript can execute code on your website. Only add code from trusted sources.</p>
+          <p class="mt-1 text-sm text-[#7b5b1f]">Review code before enabling a snippet. Inactive snippets are never sent to storefront visitors.</p>
         </div>
       </div>
     </div>
 
     <div class="mb-6 rounded-2xl border border-black/5 bg-white p-4 md:p-5 shadow-sm">
-      <div class="grid gap-3 md:grid-cols-[minmax(0,1.8fr)_minmax(180px,220px)_minmax(180px,220px)]">
+      <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(0,1.8fr)_repeat(3,minmax(160px,220px))]">
         <label class="relative block">
           <span class="sr-only">Search</span>
           <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-black/30"></i>
@@ -142,6 +133,16 @@
             <option value="HTML">HTML</option>
             <option value="CSS">CSS</option>
             <option value="JavaScript">JavaScript</option>
+          </select>
+        </label>
+
+        <label class="block">
+          <span class="sr-only">Insertion location filter</span>
+          <select id="locationFilter" class="w-full rounded-lg border border-black/10 bg-[var(--bg-soft)] px-4 py-3 text-sm outline-none focus:border-[var(--blue-500)]">
+            <option value="all">All locations</option>
+            <option value="HEAD">HEAD</option>
+            <option value="BODY_START">BODY_START</option>
+            <option value="BODY_END">BODY_END</option>
           </select>
         </label>
 
@@ -161,11 +162,11 @@
         <table class="min-w-full text-left text-sm">
           <thead>
             <tr class="bg-[var(--navy-900)] text-white">
-              <th class="px-5 py-3.5 font-display font-semibold whitespace-nowrap">Code name</th>
-              <th class="px-5 py-3.5 font-display font-semibold whitespace-nowrap">Type</th>
-              <th class="px-5 py-3.5 font-display font-semibold whitespace-nowrap">Location</th>
+              <th class="px-5 py-3.5 font-display font-semibold whitespace-nowrap">Code Name</th>
+              <th class="px-5 py-3.5 font-display font-semibold whitespace-nowrap">Code Type</th>
+              <th class="px-5 py-3.5 font-display font-semibold whitespace-nowrap">Insertion Location</th>
               <th class="px-5 py-3.5 font-display font-semibold whitespace-nowrap">Status</th>
-              <th class="px-5 py-3.5 font-display font-semibold whitespace-nowrap">Last updated</th>
+              <th class="px-5 py-3.5 font-display font-semibold whitespace-nowrap">Last Updated</th>
               <th class="px-5 py-3.5 font-display font-semibold whitespace-nowrap">Actions</th>
             </tr>
           </thead>
@@ -217,6 +218,8 @@
     </div>
   </main>
 
+  <div id="toast" class="fixed bottom-5 right-5 z-[70] hidden max-w-sm rounded-xl px-5 py-3 text-sm font-medium text-white shadow-xl" role="status" aria-live="polite"></div>
+
   <div id="snippetModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-[#0d1230]/55 p-4">
     <div class="w-full max-w-3xl rounded-3xl bg-white shadow-2xl">
       <div class="flex items-start justify-between border-b border-black/5 px-6 py-5">
@@ -250,9 +253,9 @@
           <label class="block md:col-span-1">
             <span class="mb-2 block text-sm font-medium text-[var(--navy-900)]">Insertion location</span>
             <select id="snippetLocation" name="insertion_location" class="w-full rounded-xl border border-black/10 bg-[var(--bg-soft)] px-4 py-3 text-sm outline-none focus:border-[var(--blue-500)]" required>
-              <option value="HEAD">HEAD — before closing &lt;/head&gt;</option>
-              <option value="BODY_START">BODY START — after opening &lt;body&gt;</option>
-              <option value="BODY_END">BODY END — before closing &lt;/body&gt;</option>
+              <option value="HEAD">HEAD — Insert inside the HTML head section.</option>
+              <option value="BODY_START">BODY_START — Immediately after the opening body tag.</option>
+              <option value="BODY_END">BODY_END — Immediately before the closing body tag.</option>
             </select>
           </label>
 
@@ -272,6 +275,9 @@
             <span id="charCount" class="font-mono text-[11px] text-slate-600">0 / 100000</span>
           </div>
         </div>
+
+        <label for="snippetDescription" class="mt-5 block text-sm font-medium text-[var(--navy-900)]">Description <span class="font-normal text-black/45">(optional)</span></label>
+        <textarea id="snippetDescription" name="description" maxlength="255" rows="3" placeholder="Add notes about this snippet..." class="mt-2 min-h-0 w-full rounded-xl border border-black/10 bg-[var(--bg-soft)] px-4 py-3 text-sm outline-none focus:border-[var(--blue-500)]"></textarea>
 
         <div id="formError" class="mt-5 hidden rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"></div>
 
@@ -303,7 +309,7 @@
   </div>
 
   <script>
-    const apiBase = '/admin/header-code-manager';
+    const apiBase = '/api/header-code';
     const state = {
       items: [],
       filtered: [],
@@ -311,6 +317,7 @@
       pageSize: 10,
       search: '',
       type: 'all',
+      location: 'all',
       status: 'all',
       editingId: null,
       pendingDeleteId: null
@@ -321,6 +328,7 @@
     const form = document.getElementById('snippetForm');
     const searchInput = document.getElementById('searchInput');
     const typeFilter = document.getElementById('typeFilter');
+    const locationFilter = document.getElementById('locationFilter');
     const statusFilter = document.getElementById('statusFilter');
     const pageSizeSelect = document.getElementById('pageSizeSelect');
     const snippetTableBody = document.getElementById('snippetTableBody');
@@ -336,6 +344,15 @@
     const snippetType = document.getElementById('snippetType');
     const charCount = document.getElementById('charCount');
     const formError = document.getElementById('formError');
+    const toast = document.getElementById('toast');
+    let toastTimer;
+
+    function showToast(message, isError) {
+      toast.textContent = message;
+      toast.className = `fixed bottom-5 right-5 z-[70] max-w-sm rounded-xl px-5 py-3 text-sm font-medium text-white shadow-xl ${isError ? 'bg-red-700' : 'bg-emerald-700'}`;
+      window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(() => toast.classList.add('hidden'), 3500);
+    }
 
     function locationLabel(value) {
       const map = {
@@ -410,9 +427,11 @@
       const query = state.search.trim().toLowerCase();
       state.filtered = state.items.filter((item) => {
         const matchesSearch = !query || `${item.name || ''} ${item.description || ''}`.toLowerCase().includes(query);
-        const matchesType = state.type === 'all' || item.code_type === state.type;
-        const matchesStatus = state.status === 'all' || (state.status === 'active' ? Boolean(item.is_active) : !item.is_active);
-        return matchesSearch && matchesType && matchesStatus;
+        const matchesType = state.type === 'all' || item.type === state.type;
+        const matchesLocation = state.location === 'all' || item.location === state.location;
+        const active = Boolean(Number(item.active));
+        const matchesStatus = state.status === 'all' || (state.status === 'active' ? active : !active);
+        return matchesSearch && matchesType && matchesLocation && matchesStatus;
       });
 
       const totalPages = Math.max(1, Math.ceil(state.filtered.length / state.pageSize));
@@ -435,18 +454,19 @@
 
       emptyState.classList.add('hidden');
       snippetTableBody.innerHTML = pageItems.map((item) => {
-        const activeClass = item.is_active ? 'status-active' : 'status-inactive';
-        const activeLabel = item.is_active ? 'Active' : 'Inactive';
+        const active = Boolean(Number(item.active));
+        const activeClass = active ? 'status-active' : 'status-inactive';
+        const activeLabel = active ? 'Active' : 'Inactive';
         return `
           <tr class="border-t border-black/5 align-middle hover:bg-[var(--bg-soft)]/80">
             <td class="px-5 py-4">
               <div class="font-medium text-[var(--navy-900)]">${escapeHtml(item.name || 'Untitled snippet')}</div>
               <div class="mt-1 text-xs text-black/45">${escapeHtml(item.description || '') || 'No description provided'}</div>
             </td>
-            <td class="px-5 py-4 text-black/70">${escapeHtml(item.code_type || 'HTML')}</td>
-            <td class="px-5 py-4 text-black/70">${escapeHtml(locationLabel(item.insertion_location))}</td>
+            <td class="px-5 py-4 text-black/70">${escapeHtml(item.type || 'HTML')}</td>
+            <td class="px-5 py-4 text-black/70">${escapeHtml(locationLabel(item.location))}</td>
             <td class="px-5 py-4">
-              <button type="button" data-action="toggle-status" data-id="${item.id}" class="status-badge ${activeClass} cursor-pointer transition hover:opacity-80">${activeLabel}</button>
+              <button type="button" data-action="toggle-status" data-id="${item.id}" data-active="${active ? 'false' : 'true'}" class="status-badge ${activeClass} cursor-pointer transition hover:opacity-80" aria-label="Set ${active ? 'inactive' : 'active'}">${activeLabel}</button>
             </td>
             <td class="px-5 py-4 text-black/70">${formatUpdatedDate(item.updated_at)}</td>
             <td class="px-5 py-4">
@@ -486,7 +506,7 @@
     async function fetchSnippets() {
       setLoading(true);
       try {
-        const response = await fetch(`${apiBase}/list`, { credentials: 'same-origin' });
+        const response = await fetch(apiBase, { credentials: 'same-origin' });
         if (!response.ok) {
           throw new Error('Unable to load snippets.');
         }
@@ -503,14 +523,15 @@
     async function submitSnippet(event) {
       event.preventDefault();
       formError.classList.add('hidden');
+      const isEditing = Boolean(state.editingId);
 
       const payload = {
         name: document.getElementById('snippetName').value.trim(),
-        code_type: document.getElementById('snippetType').value,
-        insertion_location: document.getElementById('snippetLocation').value,
-        is_active: document.getElementById('snippetActive').checked ? 1 : 0,
-        code_content: snippetCode.value,
-        description: ''
+        type: document.getElementById('snippetType').value,
+        location: document.getElementById('snippetLocation').value,
+        active: document.getElementById('snippetActive').checked,
+        code: snippetCode.value,
+        description: document.getElementById('snippetDescription').value
       };
 
       const method = state.editingId ? 'PUT' : 'POST';
@@ -532,6 +553,7 @@
 
         closeModal();
         await fetchSnippets();
+        showToast(isEditing ? 'Snippet updated successfully.' : 'Snippet created successfully.', false);
       } catch (error) {
         formError.textContent = error.message || 'Unable to save snippet.';
         formError.classList.remove('hidden');
@@ -551,27 +573,31 @@
         }
         closeConfirmDelete();
         await fetchSnippets();
+        showToast('Snippet deleted successfully.', false);
       } catch (error) {
         console.error(error);
         closeConfirmDelete();
-        showError(error.message || 'Unable to delete snippet.');
+        showToast(error.message || 'Unable to delete snippet.', true);
       }
     }
 
-    async function toggleStatus(id) {
+    async function toggleStatus(id, active) {
       try {
-        const response = await fetch(`${apiBase}/${id}/toggle-status`, {
+        const response = await fetch(`${apiBase}/${id}/status`, {
           method: 'PATCH',
-          credentials: 'same-origin'
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ active })
         });
         const payload = await response.json();
         if (!response.ok) {
           throw new Error((payload && payload.message) || 'Unable to update status.');
         }
         await fetchSnippets();
+        showToast(`Snippet ${active ? 'activated' : 'deactivated'} successfully.`, false);
       } catch (error) {
         console.error(error);
-        showError(error.message || 'Unable to update status.');
+        showToast(error.message || 'Unable to update status.', true);
       }
     }
 
@@ -592,6 +618,11 @@
     });
     statusFilter.addEventListener('change', (event) => {
       state.status = event.target.value;
+      state.page = 1;
+      applyFilters();
+    });
+    locationFilter.addEventListener('change', (event) => {
+      state.location = event.target.value;
       state.page = 1;
       applyFilters();
     });
@@ -631,10 +662,11 @@
         document.getElementById('modalTitle').textContent = 'Edit snippet';
         document.getElementById('submitSnippetBtn').textContent = 'Update snippet';
         document.getElementById('snippetName').value = snippet.name || '';
-        document.getElementById('snippetType').value = snippet.code_type || 'HTML';
-        document.getElementById('snippetLocation').value = snippet.insertion_location || 'HEAD';
-        document.getElementById('snippetActive').checked = Boolean(snippet.is_active);
-        snippetCode.value = snippet.code_content || '';
+        document.getElementById('snippetType').value = snippet.type || 'HTML';
+        document.getElementById('snippetLocation').value = snippet.location || 'HEAD';
+        document.getElementById('snippetActive').checked = Boolean(Number(snippet.active));
+        document.getElementById('snippetDescription').value = snippet.description || '';
+        snippetCode.value = snippet.code || '';
         updateCharCount();
         formError.classList.add('hidden');
         modal.classList.remove('hidden');
@@ -647,7 +679,7 @@
       }
 
       if (action === 'toggle-status') {
-        await toggleStatus(id);
+        await toggleStatus(id, actionButton.dataset.active === 'true');
       }
     });
 
