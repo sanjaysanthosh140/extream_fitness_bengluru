@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Header Code Manager | Fitness Extreme International</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css" />
+  <style>
+    :root {
+      --navy-950: #0d1230;
+      --navy-900: #182253;
+      --navy-800: #212c63;
+      --blue-400: #7c9fda;
+      --blue-500: #4f6fd1;
+      --amber-400: #ffb238;
+      --amber-100: #fff1d8;
+      --bg-soft: #f5f7fc;
+      --ink: #12162e;
+      --muted: #5d647b;
+      --line: rgba(18, 22, 46, 0.08);
+      --green-100: #dff6e8;
+      --green-700: #0f8a54;
+      --red-100: #ffe3e3;
+      --red-700: #b42318;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background: var(--bg-soft);
+      color: var(--ink);
+    }
+
+    .font-display { font-family: "Space Grotesk", sans-serif; }
+    .font-mono { font-family: "IBM Plex Mono", monospace; }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 76px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      padding: 0.35rem 0.7rem;
+    }
+
+    .status-active {
+      background: var(--green-100);
+      color: var(--green-700);
+    }
+
+    .status-inactive {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+
+    .editor-shell {
+      position: relative;
+      border: 1px solid rgba(18, 22, 46, 0.1);
+      border-radius: 16px;
+      background: #0f172a;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+      overflow: hidden;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 220px;
+      max-height: 420px;
+    }
+  </style>
+</head>
+<body>
+  <header class="bg-[var(--navy-950)] text-white">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <img src="/img/Copy%20of%20fei%20-%20intl.png" onerror="this.src='/img/fei-logo-header.png'" alt="Fitness Extreme International" class="h-14 sm:h-16 w-auto max-w-[180px] object-contain rounded" />
+        <span class="font-display font-semibold tracking-wide text-sm hidden sm:inline">Fitness Extreme Varthur</span>
+      </div>
+      <nav class="flex items-center gap-4">
+        <div class="relative group">
+          <button type="button" class="flex items-center gap-2 text-sm text-white/80 hover:text-white transition">
+            Website Settings
+            <i class="fa-solid fa-chevron-down text-[10px]"></i>
+          </button>
+          <div class="absolute right-0 top-full mt-2 hidden min-w-[220px] rounded-xl border border-white/10 bg-[#111a3a] py-2 shadow-xl group-hover:block">
+            <a href="/admin/header-code-manager" class="block px-4 py-2 text-sm text-white/80 hover:bg-white/5 hover:text-white">Header Code Manager</a>
+            <a href="/admin/marketing-settings" class="block px-4 py-2 text-sm text-white/80 hover:bg-white/5 hover:text-white">Marketing Settings</a>
+          </div>
+        </div>
+        <a href="/admin/logout" class="text-sm text-white/70 hover:text-white transition flex items-center gap-2">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          Logout
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-10">
+    <div class="mb-8">
+      <p class="font-mono text-xs tracking-[0.24em] text-[var(--blue-500)] uppercase mb-2 font-bold">WEBSITE SETTINGS</p>
+      <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h1 class="font-display text-3xl md:text-4xl font-semibold text-[var(--navy-900)]">Header Code Manager</h1>
+          <p class="mt-2 text-sm text-black/60 max-w-2xl">Manage custom HTML, CSS, and JavaScript snippets for your storefront without editing its source files.</p>
+        </div>
+        <button id="addSnippetBtn" type="button" class="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--navy-900)] px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[var(--navy-950)] transition">
+          <i class="fa-solid fa-plus"></i>
+          + Add New Code
+        </button>
+      </div>
+    </div>
+
+    <div class="mb-6 rounded-xl border border-[#f0d083] bg-[#fff7e7] px-4 py-4 shadow-sm">
+      <div class="flex items-start gap-3">
+        <div class="mt-0.5 flex h-7 w-7 items-center justify-center rounded-full bg-[#fbe7b6] text-[#b67900]">
+          <i class="fa-solid fa-triangle-exclamation text-sm"></i>
+        </div>
+        <div>
+          <p class="font-semibold text-[#5d3d00]">Only add code from trusted sources.</p>
+          <p class="mt-1 text-sm text-[#7b5b1f]">Active HTML and JavaScript run on your storefront and can execute arbitrary JavaScript. Review code before enabling a snippet. Inactive snippets are never sent to storefront visitors.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-6 rounded-2xl border border-black/5 bg-white p-4 md:p-5 shadow-sm">
+      <div class="grid gap-3 md:grid-cols-[minmax(0,1.8fr)_minmax(180px,220px)_minmax(180px,220px)]">
+        <label class="relative block">
+          <span class="sr-only">Search</span>
+          <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-black/30"></i>
+          <input id="searchInput" type="text" placeholder="Search code name or description..." class="w-full rounded-lg border border-black/10 bg-[var(--bg-soft)] py-3 pl-11 pr-4 text-sm outline-none focus:border-[var(--blue-500)]" />
+        </label>
+
+        <label class="block">
+          <span class="sr-only">Code type filter</span>
+          <select id="typeFilter" class="w-full rounded-lg border border-black/10 bg-[var(--bg-soft)] px-4 py-3 text-sm outline-none focus:border-[var(--blue-500)]">
+            <option value="all">All types</option>
+            <option value="HTML">HTML</option>
+            <option value="CSS">CSS</option>
+            <option value="JavaScript">JavaScript</option>
+          </select>
+        </label>
+
+        <label class="block">
+          <span class="sr-only">Status filter</span>
+          <select id="statusFilter" class="w-full rounded-lg border border-black/10 bg-[var(--bg-soft)] px-4 py-3 text-sm outline-none focus:border-[var(--blue-500)]">
+            <option value="all">All statuses</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <div class="rounded-2xl border border-black/5 bg-white shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-left text-sm">
+          <thead>
+            <tr class="bg-[var(--navy-900)] text-white">
+              <th class="px-5 py-3.5 font-display font-semibold whitespace-nowrap">Code name</th>
+              <th class="px-5 py-3.5 font-display font-semibold whitespace-nowrap">Type</th>
+              <th class="px-5 py-3.5 font-display font-semibold whitespace-nowrap">Location</th>
+              <th class="px-5 py-3.5 font-display font-semibold whitespace-nowrap">Status</th>
+              <th class="px-5 py-3.5 font-display font-semibold whitespace-nowrap">Last updated</th>
+              <th class="px-5 py-3.5 font-display font-semibold whitespace-nowrap">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="snippetTableBody"></tbody>
+        </table>
+      </div>
+
+      <div id="loadingState" class="hidden px-6 py-12 text-center text-sm text-black/60">
+        <div class="inline-flex items-center gap-3 rounded-full border border-black/10 bg-[var(--bg-soft)] px-4 py-2">
+          <i class="fa-solid fa-spinner fa-spin"></i>
+          Loading snippets...
+        </div>
+      </div>
+
+      <div id="errorState" class="hidden px-6 py-12 text-center text-sm text-red-700">
+        <div class="inline-flex max-w-md flex-col items-center gap-3 rounded-2xl border border-red-200 bg-red-50 px-5 py-4">
+          <i class="fa-solid fa-circle-exclamation text-lg"></i>
+          <span id="errorMessage">There was a problem loading snippets.</span>
+        </div>
+      </div>
+
+      <div id="emptyState" class="hidden px-6 py-16 text-center">
+        <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[var(--bg-soft)] text-black/30">
+          <i class="fa-solid fa-inbox text-xl"></i>
+        </div>
+        <p class="font-display text-lg font-semibold text-black/65">No snippets found</p>
+        <p class="mt-1 text-sm text-black/45">Try adjusting the search or filters, or add a new code snippet.</p>
+      </div>
+
+      <div class="flex flex-col gap-3 border-t border-black/5 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+        <p id="paginationInfo" class="text-xs font-mono text-black/55">Showing 0–0 of 0</p>
+        <div class="flex items-center gap-3">
+          <select id="pageSizeSelect" class="rounded-lg border border-black/10 bg-[var(--bg-soft)] px-3 py-2 text-xs outline-none">
+            <option value="10">10 / page</option>
+            <option value="25">25 / page</option>
+            <option value="50">50 / page</option>
+          </select>
+          <div class="flex items-center gap-2">
+            <button id="prevPageBtn" type="button" class="flex h-8 w-8 items-center justify-center rounded-lg border border-black/10 bg-white text-black/60 transition hover:bg-[var(--bg-soft)] disabled:cursor-not-allowed disabled:opacity-30" aria-label="Previous page">
+              <i class="fa-solid fa-chevron-left text-xs"></i>
+            </button>
+            <span id="pageIndicator" class="font-mono text-xs text-black/60">Page 1 of 1</span>
+            <button id="nextPageBtn" type="button" class="flex h-8 w-8 items-center justify-center rounded-lg border border-black/10 bg-white text-black/60 transition hover:bg-[var(--bg-soft)] disabled:cursor-not-allowed disabled:opacity-30" aria-label="Next page">
+              <i class="fa-solid fa-chevron-right text-xs"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="snippetModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-[#0d1230]/55 p-4">
+    <div class="w-full max-w-3xl rounded-3xl bg-white shadow-2xl">
+      <div class="flex items-start justify-between border-b border-black/5 px-6 py-5">
+        <div>
+          <h2 id="modalTitle" class="font-display text-2xl font-semibold text-[var(--navy-900)]">Add new code</h2>
+          <p class="mt-1 text-sm text-black/55">Configure where the snippet runs on the storefront.</p>
+        </div>
+        <button id="closeModalBtn" type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full text-black/40 hover:bg-[var(--bg-soft)] hover:text-black/70" aria-label="Close modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="snippetForm" class="p-6">
+        <input id="snippetId" type="hidden" name="id" value="" />
+
+        <div class="grid gap-5 md:grid-cols-2">
+          <label class="block">
+            <span class="mb-2 block text-sm font-medium text-[var(--navy-900)]">Code name</span>
+            <input id="snippetName" name="name" type="text" placeholder="e.g. Google Analytics" class="w-full rounded-xl border border-black/10 bg-[var(--bg-soft)] px-4 py-3 text-sm outline-none focus:border-[var(--blue-500)]" required />
+          </label>
+
+          <label class="block">
+            <span class="mb-2 block text-sm font-medium text-[var(--navy-900)]">Code type</span>
+            <select id="snippetType" name="code_type" class="w-full rounded-xl border border-black/10 bg-[var(--bg-soft)] px-4 py-3 text-sm outline-none focus:border-[var(--blue-500)]" required>
+              <option value="HTML">HTML</option>
+              <option value="CSS">CSS</option>
+              <option value="JavaScript">JavaScript</option>
+            </select>
+          </label>
+
+          <label class="block md:col-span-1">
+            <span class="mb-2 block text-sm font-medium text-[var(--navy-900)]">Insertion location</span>
+            <select id="snippetLocation" name="insertion_location" class="w-full rounded-xl border border-black/10 bg-[var(--bg-soft)] px-4 py-3 text-sm outline-none focus:border-[var(--blue-500)]" required>
+              <option value="HEAD">HEAD — before closing &lt;/head&gt;</option>
+              <option value="BODY_START">BODY START — after opening &lt;body&gt;</option>
+              <option value="BODY_END">BODY END — before closing &lt;/body&gt;</option>
+            </select>
+          </label>
+
+          <div class="flex items-center justify-start gap-3 rounded-xl border border-black/10 bg-[var(--bg-soft)] px-4 py-3 md:col-span-1">
+            <input id="snippetActive" name="is_active" type="checkbox" class="h-4 w-4 rounded border-black/20 accent-[var(--navy-900)]" />
+            <label for="snippetActive" class="text-sm font-medium text-[var(--navy-900)]">Active on storefront</label>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <label for="snippetCode" class="mb-2 block text-sm font-medium text-[var(--navy-900)]">Code</label>
+          <div class="editor-shell">
+            <textarea id="snippetCode" name="code_content" maxlength="100000" placeholder="Paste your HTML, CSS, or JavaScript here..." class="w-full border-0 bg-[#0f172a] px-4 py-3 font-mono text-sm text-slate-100 outline-none placeholder:text-slate-400" required></textarea>
+          </div>
+          <div class="mt-2 flex items-center justify-between gap-3 text-xs text-black/55">
+            <span>Plain text editor. Maximum 100,000 characters.</span>
+            <span id="charCount" class="font-mono text-[11px] text-slate-600">0 / 100000</span>
+          </div>
+        </div>
+
+        <div id="formError" class="mt-5 hidden rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"></div>
+
+        <div class="mt-6 flex flex-wrap items-center justify-end gap-3">
+          <button id="cancelModalBtn" type="button" class="rounded-lg border border-black/10 bg-white px-5 py-3 text-sm font-semibold text-[var(--navy-900)] hover:bg-[var(--bg-soft)]">Cancel</button>
+          <button id="submitSnippetBtn" type="submit" class="rounded-lg bg-[var(--navy-900)] px-5 py-3 text-sm font-semibold text-white hover:bg-[var(--navy-950)]">Save snippet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="confirmModal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-[#0d1230]/55 p-4">
+    <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-red-50 text-red-600">
+          <i class="fa-solid fa-trash-can"></i>
+        </div>
+        <div>
+          <p class="font-display text-xl font-semibold text-[var(--navy-900)]">Delete snippet</p>
+          <p class="text-sm text-black/50">This action cannot be undone.</p>
+        </div>
+      </div>
+      <p class="text-sm text-black/70">Are you sure you want to delete <span id="deleteSnippetName" class="font-semibold text-[var(--navy-900)]">this snippet</span>?</p>
+      <div class="mt-6 flex justify-end gap-3">
+        <button id="cancelDeleteBtn" type="button" class="rounded-lg border border-black/10 bg-white px-4 py-2.5 text-sm font-semibold text-[var(--navy-900)] hover:bg-[var(--bg-soft)]">Cancel</button>
+        <button id="confirmDeleteBtn" type="button" class="rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const apiBase = '/admin/header-code-manager';
+    const state = {
+      items: [],
+      filtered: [],
+      page: 1,
+      pageSize: 10,
+      search: '',
+      type: 'all',
+      status: 'all',
+      editingId: null,
+      pendingDeleteId: null
+    };
+
+    const modal = document.getElementById('snippetModal');
+    const confirmModal = document.getElementById('confirmModal');
+    const form = document.getElementById('snippetForm');
+    const searchInput = document.getElementById('searchInput');
+    const typeFilter = document.getElementById('typeFilter');
+    const statusFilter = document.getElementById('statusFilter');
+    const pageSizeSelect = document.getElementById('pageSizeSelect');
+    const snippetTableBody = document.getElementById('snippetTableBody');
+    const loadingState = document.getElementById('loadingState');
+    const errorState = document.getElementById('errorState');
+    const emptyState = document.getElementById('emptyState');
+    const errorMessage = document.getElementById('errorMessage');
+    const paginationInfo = document.getElementById('paginationInfo');
+    const pageIndicator = document.getElementById('pageIndicator');
+    const prevPageBtn = document.getElementById('prevPageBtn');
+    const nextPageBtn = document.getElementById('nextPageBtn');
+    const snippetCode = document.getElementById('snippetCode');
+    const snippetType = document.getElementById('snippetType');
+    const charCount = document.getElementById('charCount');
+    const formError = document.getElementById('formError');
+
+    function locationLabel(value) {
+      const map = {
+        HEAD: 'HEAD',
+        BODY_START: 'BODY START',
+        BODY_END: 'BODY END'
+      };
+      return map[value] || value || 'HEAD';
+    }
+
+    function formatUpdatedDate(value) {
+      if (!value) return '—';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return '—';
+      return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(date);
+    }
+
+    function updateCharCount() {
+      charCount.textContent = `${snippetCode.value.length} / 100000`;
+    }
+
+    function setLoading(loading) {
+      loadingState.classList.toggle('hidden', !loading);
+      errorState.classList.toggle('hidden', true);
+      emptyState.classList.toggle('hidden', true);
+      snippetTableBody.innerHTML = '';
+    }
+
+    function showError(message) {
+      errorMessage.textContent = message || 'There was a problem loading snippets.';
+      errorState.classList.remove('hidden');
+      loadingState.classList.add('hidden');
+      emptyState.classList.add('hidden');
+      snippetTableBody.innerHTML = '';
+    }
+
+    function openModal() {
+      form.reset();
+      document.getElementById('snippetId').value = '';
+      document.getElementById('modalTitle').textContent = 'Add new code';
+      document.getElementById('submitSnippetBtn').textContent = 'Save snippet';
+      snippetType.value = 'HTML';
+      snippetCode.value = '';
+      state.editingId = null;
+      formError.classList.add('hidden');
+      updateCharCount();
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeModal() {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      formError.classList.add('hidden');
+      form.reset();
+    }
+
+    function openConfirmDelete(snippet) {
+      document.getElementById('deleteSnippetName').textContent = snippet.name || 'this snippet';
+      state.pendingDeleteId = snippet.id;
+      confirmModal.classList.remove('hidden');
+      confirmModal.classList.add('flex');
+    }
+
+    function closeConfirmDelete() {
+      confirmModal.classList.add('hidden');
+      confirmModal.classList.remove('flex');
+      state.pendingDeleteId = null;
+    }
+
+    function applyFilters() {
+      const query = state.search.trim().toLowerCase();
+      state.filtered = state.items.filter((item) => {
+        const matchesSearch = !query || `${item.name || ''} ${item.description || ''}`.toLowerCase().includes(query);
+        const matchesType = state.type === 'all' || item.code_type === state.type;
+        const matchesStatus = state.status === 'all' || (state.status === 'active' ? Boolean(item.is_active) : !item.is_active);
+        return matchesSearch && matchesType && matchesStatus;
+      });
+
+      const totalPages = Math.max(1, Math.ceil(state.filtered.length / state.pageSize));
+      if (state.page > totalPages) state.page = totalPages;
+
+      const start = (state.page - 1) * state.pageSize;
+      const pageItems = state.filtered.slice(start, start + state.pageSize);
+      renderRows(pageItems);
+      renderPagination();
+    }
+
+    function renderRows(pageItems) {
+      if (!pageItems || pageItems.length === 0) {
+        snippetTableBody.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        errorState.classList.add('hidden');
+        loadingState.classList.add('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      snippetTableBody.innerHTML = pageItems.map((item) => {
+        const activeClass = item.is_active ? 'status-active' : 'status-inactive';
+        const activeLabel = item.is_active ? 'Active' : 'Inactive';
+        return `
+          <tr class="border-t border-black/5 align-middle hover:bg-[var(--bg-soft)]/80">
+            <td class="px-5 py-4">
+              <div class="font-medium text-[var(--navy-900)]">${escapeHtml(item.name || 'Untitled snippet')}</div>
+              <div class="mt-1 text-xs text-black/45">${escapeHtml(item.description || '') || 'No description provided'}</div>
+            </td>
+            <td class="px-5 py-4 text-black/70">${escapeHtml(item.code_type || 'HTML')}</td>
+            <td class="px-5 py-4 text-black/70">${escapeHtml(locationLabel(item.insertion_location))}</td>
+            <td class="px-5 py-4">
+              <button type="button" data-action="toggle-status" data-id="${item.id}" class="status-badge ${activeClass} cursor-pointer transition hover:opacity-80">${activeLabel}</button>
+            </td>
+            <td class="px-5 py-4 text-black/70">${formatUpdatedDate(item.updated_at)}</td>
+            <td class="px-5 py-4">
+              <div class="flex items-center gap-3">
+                <button type="button" data-action="edit" data-id="${item.id}" class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-black/10 bg-white text-[var(--navy-900)] hover:bg-[var(--bg-soft)]" title="Edit snippet">
+                  <i class="fa-solid fa-pen-to-square text-sm"></i>
+                </button>
+                <button type="button" data-action="delete" data-id="${item.id}" class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-black/10 bg-white text-red-600 hover:bg-red-50" title="Delete snippet">
+                  <i class="fa-solid fa-trash text-sm"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderPagination() {
+      const totalPages = Math.max(1, Math.ceil(state.filtered.length / state.pageSize));
+      const start = state.filtered.length === 0 ? 0 : (state.page - 1) * state.pageSize + 1;
+      const end = Math.min(state.page * state.pageSize, state.filtered.length);
+      paginationInfo.textContent = `Showing ${start}–${end} of ${state.filtered.length}`;
+      pageIndicator.textContent = `Page ${state.page} of ${totalPages}`;
+      prevPageBtn.disabled = state.page <= 1;
+      nextPageBtn.disabled = state.page >= totalPages;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    async function fetchSnippets() {
+      setLoading(true);
+      try {
+        const response = await fetch(`${apiBase}/list`, { credentials: 'same-origin' });
+        if (!response.ok) {
+          throw new Error('Unable to load snippets.');
+        }
+        const payload = await response.json();
+        state.items = Array.isArray(payload.snippets) ? payload.snippets : [];
+        state.page = 1;
+        applyFilters();
+      } catch (error) {
+        console.error(error);
+        showError(error.message || 'Unable to load snippets.');
+      }
+    }
+
+    async function submitSnippet(event) {
+      event.preventDefault();
+      formError.classList.add('hidden');
+
+      const payload = {
+        name: document.getElementById('snippetName').value.trim(),
+        code_type: document.getElementById('snippetType').value,
+        insertion_location: document.getElementById('snippetLocation').value,
+        is_active: document.getElementById('snippetActive').checked ? 1 : 0,
+        code_content: snippetCode.value,
+        description: ''
+      };
+
+      const method = state.editingId ? 'PUT' : 'POST';
+      const url = state.editingId ? `${apiBase}/${state.editingId}` : apiBase;
+
+      try {
+        const response = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'same-origin',
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+        if (!response.ok) {
+          const message = result && result.errors ? Object.values(result.errors).join(' ') : (result && result.message) || 'Unable to save snippet.';
+          throw new Error(message);
+        }
+
+        closeModal();
+        await fetchSnippets();
+      } catch (error) {
+        formError.textContent = error.message || 'Unable to save snippet.';
+        formError.classList.remove('hidden');
+      }
+    }
+
+    async function deleteSnippet() {
+      if (!state.pendingDeleteId) return;
+      try {
+        const response = await fetch(`${apiBase}/${state.pendingDeleteId}`, {
+          method: 'DELETE',
+          credentials: 'same-origin'
+        });
+        const payload = await response.json();
+        if (!response.ok) {
+          throw new Error((payload && payload.message) || 'Unable to delete snippet.');
+        }
+        closeConfirmDelete();
+        await fetchSnippets();
+      } catch (error) {
+        console.error(error);
+        closeConfirmDelete();
+        showError(error.message || 'Unable to delete snippet.');
+      }
+    }
+
+    async function toggleStatus(id) {
+      try {
+        const response = await fetch(`${apiBase}/${id}/toggle-status`, {
+          method: 'PATCH',
+          credentials: 'same-origin'
+        });
+        const payload = await response.json();
+        if (!response.ok) {
+          throw new Error((payload && payload.message) || 'Unable to update status.');
+        }
+        await fetchSnippets();
+      } catch (error) {
+        console.error(error);
+        showError(error.message || 'Unable to update status.');
+      }
+    }
+
+    document.getElementById('addSnippetBtn').addEventListener('click', openModal);
+    document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+    document.getElementById('cancelModalBtn').addEventListener('click', closeModal);
+    document.getElementById('cancelDeleteBtn').addEventListener('click', closeConfirmDelete);
+    document.getElementById('confirmDeleteBtn').addEventListener('click', deleteSnippet);
+    searchInput.addEventListener('input', (event) => {
+      state.search = event.target.value;
+      state.page = 1;
+      applyFilters();
+    });
+    typeFilter.addEventListener('change', (event) => {
+      state.type = event.target.value;
+      state.page = 1;
+      applyFilters();
+    });
+    statusFilter.addEventListener('change', (event) => {
+      state.status = event.target.value;
+      state.page = 1;
+      applyFilters();
+    });
+    pageSizeSelect.addEventListener('change', (event) => {
+      state.pageSize = Number(event.target.value) || 10;
+      state.page = 1;
+      applyFilters();
+    });
+    prevPageBtn.addEventListener('click', () => {
+      if (state.page > 1) {
+        state.page -= 1;
+        applyFilters();
+      }
+    });
+    nextPageBtn.addEventListener('click', () => {
+      const totalPages = Math.max(1, Math.ceil(state.filtered.length / state.pageSize));
+      if (state.page < totalPages) {
+        state.page += 1;
+        applyFilters();
+      }
+    });
+    snippetCode.addEventListener('input', updateCharCount);
+    form.addEventListener('submit', submitSnippet);
+
+    document.addEventListener('click', async (event) => {
+      const actionButton = event.target.closest('[data-action]');
+      if (!actionButton) return;
+
+      const action = actionButton.dataset.action;
+      const id = Number(actionButton.dataset.id);
+
+      if (action === 'edit') {
+        const snippet = state.items.find((item) => Number(item.id) === id);
+        if (!snippet) return;
+        state.editingId = id;
+        document.getElementById('snippetId').value = String(id);
+        document.getElementById('modalTitle').textContent = 'Edit snippet';
+        document.getElementById('submitSnippetBtn').textContent = 'Update snippet';
+        document.getElementById('snippetName').value = snippet.name || '';
+        document.getElementById('snippetType').value = snippet.code_type || 'HTML';
+        document.getElementById('snippetLocation').value = snippet.insertion_location || 'HEAD';
+        document.getElementById('snippetActive').checked = Boolean(snippet.is_active);
+        snippetCode.value = snippet.code_content || '';
+        updateCharCount();
+        formError.classList.add('hidden');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+
+      if (action === 'delete') {
+        const snippet = state.items.find((item) => Number(item.id) === id);
+        if (snippet) openConfirmDelete(snippet);
+      }
+
+      if (action === 'toggle-status') {
+        await toggleStatus(id);
+      }
+    });
+
+    updateCharCount();
+    fetchSnippets();
+  </script>
+</body>
+</html>

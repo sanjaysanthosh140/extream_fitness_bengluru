@@ -59,7 +59,16 @@
         </div>
       </div>
       <nav class="flex items-center gap-4">
-        <a href="/admin/marketing-settings" class="text-sm text-white/70 hover:text-white transition">Marketing Settings</a>
+        <div class="relative group">
+          <!-- <button type="button" class="flex items-center gap-2 text-sm text-white/70 hover:text-white transition"> -->
+            <!-- Website Settings -->
+            <!-- <i class="fa-solid fa-chevron-down text-[10px]"></i> -->
+          <!-- </button> -->
+          <div class="absolute right-0 top-full mt-2 hidden min-w-[210px] rounded-xl border border-white/10 bg-[#111a3a] py-2 shadow-xl group-hover:block">
+            <a href="/admin/header-code-manager" class="block px-4 py-2 text-sm text-white/80 hover:bg-white/5 hover:text-white">Header Code Manager</a>
+            <!-- <a href="/admin/marketing-settings" class="block px-4 py-2 text-sm text-white/80 hover:bg-white/5 hover:text-white">Marketing Settings</a> -->
+          </div>
+        </div>
         <a href="/admin/logout" class="text-sm text-white/70 hover:text-white transition flex items-center gap-2">
           <i class="fa-solid fa-arrow-right-from-bracket"></i>
           Logout

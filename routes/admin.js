@@ -4,6 +4,15 @@ const db = require('../db');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const { getMarketingSettings, saveMarketingSettings } = require('../database/marketing-settings');
+const {
+  listHeaderCodeSnippets,
+  getHeaderCodeSnippetById,
+  createHeaderCodeSnippet,
+  updateHeaderCodeSnippet,
+  deleteHeaderCodeSnippet,
+  toggleHeaderCodeSnippetStatus,
+  validateHeaderCodeSnippetInput
+} = require('../database/header-code-manager');
 
 // Middleware - check login
 function requireLogin(req, res, next) {
@@ -90,6 +99,91 @@ router.get('/marketing-settings', requireLogin, async (req, res) => {
   } catch (error) {
     console.error('Could not load marketing settings:', error);
     res.status(500).send('Could not load marketing settings. Check the database connection and permissions.');
+  }
+});
+
+router.get('/header-code-manager', requireLogin, async (req, res) => {
+  try {
+    res.render('header-code-manager');
+  } catch (error) {
+    console.error('Could not load header code manager page:', error);
+    res.status(500).send('Could not load the Header Code Manager.');
+  }
+});
+
+router.get('/header-code-manager/list', requireLogin, async (req, res) => {
+  try {
+    const snippets = await listHeaderCodeSnippets();
+    res.json({ snippets });
+  } catch (error) {
+    console.error('Could not load snippets for admin:', error);
+    res.status(500).json({ success: false, message: 'Unable to load snippets.' });
+  }
+});
+
+router.post('/header-code-manager', requireLogin, async (req, res) => {
+  try {
+    const validation = validateHeaderCodeSnippetInput(req.body);
+    if (!validation.valid) {
+      return res.status(400).json({ success: false, message: 'Invalid snippet data.', errors: validation.errors });
+    }
+
+    const snippet = await createHeaderCodeSnippet(req.body);
+    res.status(201).json({ success: true, snippet });
+  } catch (error) {
+    console.error('Could not create header code snippet:', error);
+    const message = error && error.errors ? 'Invalid snippet data.' : 'Unable to create snippet.';
+    const statusCode = error && error.errors ? 400 : 500;
+    res.status(statusCode).json({
+      success: false,
+      message,
+      errors: error && error.errors ? error.errors : undefined
+    });
+  }
+});
+
+router.put('/header-code-manager/:id', requireLogin, async (req, res) => {
+  try {
+    const validation = validateHeaderCodeSnippetInput(req.body);
+    if (!validation.valid) {
+      return res.status(400).json({ success: false, message: 'Invalid snippet data.', errors: validation.errors });
+    }
+
+    const snippet = await updateHeaderCodeSnippet(req.params.id, req.body);
+    res.json({ success: true, snippet });
+  } catch (error) {
+    console.error('Could not update header code snippet:', error);
+    const statusCode = error && error.statusCode === 404 ? 404 : 400;
+    const message = error && error.statusCode === 404 ? 'Snippet not found.' : 'Unable to update snippet.';
+    res.status(statusCode).json({
+      success: false,
+      message,
+      errors: error && error.errors ? error.errors : undefined
+    });
+  }
+});
+
+router.delete('/header-code-manager/:id', requireLogin, async (req, res) => {
+  try {
+    await deleteHeaderCodeSnippet(req.params.id);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Could not delete header code snippet:', error);
+    const statusCode = error && error.statusCode === 404 ? 404 : 500;
+    const message = error && error.statusCode === 404 ? 'Snippet not found.' : 'Unable to delete snippet.';
+    res.status(statusCode).json({ success: false, message });
+  }
+});
+
+router.patch('/header-code-manager/:id/toggle-status', requireLogin, async (req, res) => {
+  try {
+    const snippet = await toggleHeaderCodeSnippetStatus(req.params.id);
+    res.json({ success: true, snippet });
+  } catch (error) {
+    console.error('Could not toggle status for snippet:', error);
+    const statusCode = error && error.statusCode === 404 ? 404 : 500;
+    const message = error && error.statusCode === 404 ? 'Snippet not found.' : 'Unable to update status.';
+    res.status(statusCode).json({ success: false, message });
   }
 });
 

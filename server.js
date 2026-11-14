@@ -9,6 +9,7 @@ require('dotenv').config();
 const formRoutes = require('./routes/form');
 const adminRoutes = require('./routes/admin');
 const { getMarketingSettings } = require('./database/marketing-settings');
+const { getHeaderCodeSnippetsForPublic } = require('./database/header-code-manager');
 
 const app = express();
 
@@ -73,13 +74,61 @@ app.get('/', async (req, res) => {
     tags.push(`<script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,'clarity','script','${clarityId}');</script>`);
   }
 
+  const activeSnippets = await getHeaderCodeSnippetsForPublic().catch(() => []);
+
+  const snippetGroups = {
+    HEAD: [],
+    BODY_START: [],
+    BODY_END: []
+  };
+
+  for (const snippet of activeSnippets) {
+    if (!snippet || !snippet.code_content) continue;
+    const content = String(snippet.code_content || '');
+    let injectedMarkup = content;
+
+    if (snippet.code_type === 'CSS') {
+      injectedMarkup = `<style>${content}</style>`;
+    } else if (snippet.code_type === 'JavaScript') {
+      injectedMarkup = `<script>${content}\n</script>`;
+    }
+
+    const location = snippet.insertion_location || 'HEAD';
+    if (snippetGroups[location]) {
+      snippetGroups[location].push(injectedMarkup);
+    }
+  }
+
+  const headMarker = '<!-- HEADER_CODE_SNIPPETS_HEAD -->';
+  const bodyStartMarker = '<!-- HEADER_CODE_SNIPPETS_BODY_START -->';
+  const bodyEndMarker = '<!-- HEADER_CODE_SNIPPETS_BODY_END -->';
   const marker = '<!-- MARKETING_SETTINGS -->';
   if (!html.includes(marker)) {
     console.error('Marketing settings insertion point is missing from public/index.html.');
     return res.status(500).send('Landing page tracking configuration is unavailable.');
   }
 
-  res.type('html').send(html.replace(marker, tags.join('\n')));
+  let renderedHtml = html.replace(marker, `${tags.join('\n')}\n${headMarker}`);
+  renderedHtml = renderedHtml.replace(headMarker, `${snippetGroups.HEAD.join('\n')}\n${headMarker}`);
+  renderedHtml = renderedHtml.replace(bodyStartMarker, `${snippetGroups.BODY_START.join('\n')}\n${bodyStartMarker}`);
+  renderedHtml = renderedHtml.replace(bodyEndMarker, `${snippetGroups.BODY_END.join('\n')}\n${bodyEndMarker}`);
+
+  if (!renderedHtml.includes(headMarker)) {
+    renderedHtml = renderedHtml.replace('</head>', `${snippetGroups.HEAD.join('\n')}\n</head>`);
+  }
+  if (!renderedHtml.includes(bodyStartMarker)) {
+    renderedHtml = renderedHtml.replace('<body', '<body');
+  }
+  if (!renderedHtml.includes(bodyEndMarker)) {
+    renderedHtml = renderedHtml.replace('</body>', `${snippetGroups.BODY_END.join('\n')}\n</body>`);
+  }
+
+  renderedHtml = renderedHtml
+    .replace(new RegExp(`${headMarker}`, 'g'), snippetGroups.HEAD.join('\n'))
+    .replace(new RegExp(`${bodyStartMarker}`, 'g'), snippetGroups.BODY_START.join('\n'))
+    .replace(new RegExp(`${bodyEndMarker}`, 'g'), snippetGroups.BODY_END.join('\n'));
+
+  res.type('html').send(renderedHtml);
 });
 
 const PORT = process.env.PORT || 2001;
