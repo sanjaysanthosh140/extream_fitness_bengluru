@@ -184,9 +184,6 @@
         justify-content: center;
         text-align: center;
       }
-      .mobile-offer-callout {
-        display: none;
-      }
       /* Image slot container */
       .img-slot-container {
         position: relative;
@@ -372,6 +369,19 @@
           0 0 24px rgba(232, 115, 26, 0.1);
         padding: clamp(16px, 2.5vw, 24px);
       }
+      .offer-availability-pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 32px;
+        padding: 6px 12px;
+        border-radius: 9999px !important;
+        background: #e8731a;
+        color: #04040f;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
       .contact-form {
         display: flex;
         flex-direction: column;
@@ -444,22 +454,6 @@
             0 0 0 1px rgba(232, 115, 26, 0.28),
             0 12px 28px rgba(232, 115, 26, 0.12),
             0 16px 40px rgba(0, 0, 0, 0.45);
-        }
-        .mobile-offer-callout {
-          display: inline-flex;
-          align-items: center;
-          min-height: 32px;
-          margin-bottom: 12px;
-          padding: 5px 10px;
-          border: 1px solid rgba(244, 124, 72, 0.65);
-          background: rgba(232, 115, 26, 0.14);
-          color: #f7a46f;
-          font-family: "Teko", Arial, sans-serif;
-          font-size: 15px;
-          font-weight: 700;
-          letter-spacing: 0.06em;
-          line-height: 1;
-          text-transform: uppercase;
         }
         .site-header {
           background: rgba(4, 4, 15, 0.88) !important;
@@ -793,24 +787,13 @@
               ></div>
 
               <div class="mb-3">
-                <span class="mobile-offer-callout"
-                  >Ask About Current Offers</span
-                >
                 <div class="flex items-center justify-between mb-1">
                   <span
                     class="font-headline font-bold text-xs uppercase tracking-widest"
                     style="color: #e8731a"
                     >Get in Touch</span
                   >
-                  <span
-                    style="
-                      background: rgba(232, 115, 26, 0.15);
-                      color: #e8731a;
-                      font-size: 11px;
-                      font-weight: 700;
-                      padding: 2px 8px;
-                      text-transform: uppercase;
-                    "
+                  <span class="offer-availability-pill"
                     >60% Offer Available</span
                   >
                 </div>
